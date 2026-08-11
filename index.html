@@ -1,19 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">    
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CobraOS</title>
-    <link rel="stylesheet" href="style.css">   
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
-    <div class="container">
-        <h1>Welcome to CobraOS</h1>
-        <p>This is a simple operating system interface.</p>
-        <button id="startButton">Start</button>
+    <main class="welcome-screen">
+        <button id="start-button">Start CobraOS</button>
+    </main>
+
+    <div class="desktop">
+        <header class="top-bar">
+            <div class="os-name">CobraOS</div>
+            <div class="clock" id="clock">00:00</div>
+            <div class="date" id="date">Aug 12</div>
+            <div class="system-status">
+
+                <span>🔋 70%</span>
+                <span>📶</span>
+                <span>🔊</span>
+
+        </div>
+        </header>
+
+    <div class="dock">
+
+        <div class="dock-icon">📁</div>
+        <div class="dock-icon">🌐</div>
+        <div class="dock-icon">📝</div>
+        <div class="dock-icon">🎵</div>
+        <div class="dock-icon">🖼️</div>
+        <div class="dock-icon">⚙️</div>
+
+    </div>
     </div>
 
     <script src="script.js"></script>
-</body> 
-
-
+</body>
 </html>
