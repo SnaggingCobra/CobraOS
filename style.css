@@ -9,6 +9,7 @@ body {
     overflow: hidden;
     color: white;
     font-family: Arial, sans-serif;
+
 }
 
 .welcome-screen {
@@ -16,6 +17,7 @@ body {
     inset: 0;
     display: flex;
     align-items: center;
+    
     justify-content: center;
     background: url("images/CobraOS.png") center / cover no-repeat;
 }
@@ -76,7 +78,6 @@ button:active {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-
     font-size: 14px;
     color: rgba(255, 255, 255, 0.8);
 }
@@ -124,4 +125,92 @@ button:active {
 }
 .dock-icon:hover {
     transform: translateY(-12px) scale(1.6);
+}   
+
+.app-window {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    width: 70%;
+    height: 65%;
+    transform: translateX(-50%);
+    display: none;
+    flex-direction: column;
+    background: rgba(15, 18, 30, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+.window-header {
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    cursor: grab;
+    user-select: none;
+}
+.window-controls {
+    display: flex;
+    gap: 4px;
+}
+
+.window-controls button {
+    width: 32px;
+    height: 30px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.window-controls button:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+#browser-close:hover {
+    background: #e81123;
+}
+.browser-toolbar {
+    display: flex;
+    gap: 6px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.browser-toolbar button {
+    border: none;
+    border-radius: 6px;
+    padding: 7px 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+}
+
+#browser-url {
+    flex: 1;
+    border: none;
+    outline: none;
+    border-radius: 7px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+.browser-content {
+    flex: 1;
+    overflow: hidden;
+    background: white;
+}
+
+#browser-frame {
+    width: 100%;
+    height: 100%;
+
+    border: none;
 }

@@ -27,14 +27,52 @@
 
     <div class="dock">
 
-        <div class="dock-icon">📁</div>
-        <div class="dock-icon">🌐</div>
-        <div class="dock-icon">📝</div>
-        <div class="dock-icon">🎵</div>
-        <div class="dock-icon">🖼️</div>
-        <div class="dock-icon">⚙️</div>
+        <div class="dock-icon" id="files-icon">📁</div>
+        <div class="dock-icon" id="browser-icon">🌐</div>
+        <div class="dock-icon" id="notes-icon">📝</div>
+        <div class="dock-icon" id="music-icon">🎵</div>
+        <div class="dock-icon" id="images-icon">🖼️</div>
+        <div class="dock-icon" id="settings-icon">⚙️</div>
 
     </div>
+     
+            <div class="app-window browser-window" id="browser-window">
+
+            <div class="window-header" id="browser-header">
+
+                <span>🌐 CobraOS Browser</span>
+
+                <div class="window-controls">
+                    <button id="browser-minimize">−</button>
+                    <button id="browser-maximize">□</button>
+                    <button id="browser-close">×</button>
+                </div>
+
+            </div>
+
+            <div class="browser-toolbar">
+                <button>←</button>
+                <button>→</button>
+                <button>↻</button>
+
+                <input
+                    type="text"
+                    id="browser-url"
+                    value="https://www.google.com"
+                >
+
+                <button id="browser-go">Go</button>
+            </div>
+
+            <div class="browser-content">
+                <iframe
+                    id="browser-frame"
+                    src="https://www.google.com"
+                    title="CobraOS Browser">
+                </iframe>
+            </div>
+
+        </div>
     </div>
 
     <script src="script.js"></script>

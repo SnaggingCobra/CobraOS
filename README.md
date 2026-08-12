@@ -4,7 +4,7 @@ A lightweight browser-based desktop simulation built with HTML, CSS, and JavaScr
 
 ## Overview
 
-CobraOS is a simple web project that displays a welcome screen and launches a desktop-style interface with a top bar, clock, date, system status icons, and a dock.
+CobraOS is a simple web project that displays a welcome screen and launches a desktop-style interface with a top bar, clock, date, system status icons, and a dock. 
 
 ## Features
 
@@ -32,6 +32,13 @@ CobraOS is a simple web project that displays a welcome screen and launches a de
 
 - The battery indicator uses the browser Battery Status API, which may not be supported in all browsers.
 - The dock icons are currently decorative and do not open applications.
+
+## AI Usage
+
+- Any AI usages is for API integration guidance, unexpected error handling, UI improvement ideas, CSS enhancement suggestions, and JavaScript improvement ideas.
+- AI has written the ReadME.md 
+- 
+- All code in this project was written by the initial owner.
 
 ## Improvements
 
