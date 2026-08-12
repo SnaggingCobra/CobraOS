@@ -22,7 +22,7 @@
                 <span>📶</span>
                 <span>🔊</span>
 
-        </div>
+            </div>
         </header>
 
     <div class="dock">
@@ -70,6 +70,522 @@
                     src="https://www.google.com"
                     title="CobraOS Browser">
                 </iframe>
+            </div>
+
+        </div>
+
+           <div class="app-window files-window" id="files-window">
+ 
+            <div class="window-header" id="files-header">
+
+                <span>📁 Files</span>
+
+                <div class="window-controls">
+
+                    <button id="files-minimize">−</button>
+                    <button id="files-maximize">□</button>
+                    <button id="files-close">×</button>
+
+                </div>
+
+            </div>
+
+
+            <div class="files-body">
+
+                <aside class="files-sidebar">
+
+                    <div class="files-location active">
+                        🏠 Home
+                    </div>
+
+                    <div class="files-location">
+                        🖥️ Desktop
+                    </div>
+
+                    <div class="files-location">
+                        📄 Documents
+                    </div>
+
+                    <div class="files-location">
+                        ⬇️ Downloads
+                    </div>
+
+                    <div class="files-location">
+                        🖼️ Pictures
+                    </div>
+
+                    <div class="files-location">
+                        🎵 Music
+                    </div>
+
+                </aside>
+
+
+                <main class="files-content">
+
+                    <div class="files-toolbar">
+                        <span>Home</span>
+                    </div>
+
+                    <div class="file-grid">
+
+                        <div class="file-item">
+                            <div class="file-icon">📁</div>
+                            <span>Desktop</span>
+                        </div>
+
+                        <div class="file-item">
+                            <div class="file-icon">📁</div>
+                            <span>Documents</span>
+                        </div>
+
+                        <div class="file-item">
+                            <div class="file-icon">📁</div>
+                            <span>Downloads</span>
+                        </div>
+
+                        <div class="file-item">
+                            <div class="file-icon">📁</div>
+                            <span>Pictures</span>
+                        </div>
+
+                        <div class="file-item">
+                            <div class="file-icon">📁</div>
+                            <span>Music</span>
+                        </div>
+
+                    </div>
+
+                </main>
+
+            </div>
+
+        </div>
+
+                <div class="app-window notes-window" id="notes-window">
+
+            <div class="window-header" id="notes-header">
+
+                <span>📝 CobraOS Notes</span>
+
+                <div class="window-controls">
+
+                    <button id="notes-minimize">−</button>
+                    <button id="notes-maximize">□</button>
+                    <button id="notes-close">×</button>
+
+                </div>
+
+            </div>
+
+
+            <div class="notes-toolbar">
+
+                <span id="notes-status">Saved</span>
+
+                <button id="notes-clear">Clear</button>
+
+            </div>
+
+
+            <textarea
+                id="notes-editor"
+                placeholder="Start writing..."
+            ></textarea>
+
+        </div>
+
+                    <div class="app-window music-window" id="music-window">
+
+            <div class="window-header" id="music-header">
+
+                <span>🎵 CobraOS Music</span>
+
+                <div class="window-controls">
+
+                    <button id="music-minimize">−</button>
+                    <button id="music-maximize">□</button>
+                    <button id="music-close">×</button>
+
+                </div>
+
+            </div>
+
+
+            <div class="music-content">
+
+                <div class="album-art">
+                    🎵
+                </div>
+
+                <h2 id="music-title">No song selected</h2>
+
+                <p id="music-artist">CobraOS Music</p>
+
+
+                <input
+                    type="range"
+                    id="music-progress"
+                    min="0"
+                    max="100"
+                    value="0"
+                >
+
+
+                <div class="music-time">
+
+                    <span id="music-current-time">0:00</span>
+
+                    <span id="music-duration">0:00</span>
+
+                </div>
+
+
+                <div class="music-controls">
+
+                    <button id="music-previous">⏮</button>
+
+                    <button id="music-play">▶</button>
+
+                    <button id="music-next">⏭</button>
+
+                </div>
+
+
+                <div class="music-volume">
+
+                    🔊
+
+                    <input
+                        type="range"
+                        id="music-volume"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        value="1"
+                    >
+
+                </div>
+
+
+                <label class="music-file">
+
+                    📂 Choose Music
+
+                    <input
+                        type="file"
+                        id="music-file-input"
+                        accept="audio/*"
+                    >
+
+                </label>
+
+            </div>
+
+        </div>
+
+        <div class="app-window settings-window" id="settings-window">
+
+    <div class="window-header" id="settings-header">
+
+        <span>⚙️ CobraOS Settings</span>
+
+        <div class="window-controls">
+
+            <button id="settings-minimize">−</button>
+            <button id="settings-maximize">□</button>
+            <button id="settings-close">×</button>
+
+        </div>
+
+    </div>
+
+
+            <div class="settings-body">
+
+                <aside class="settings-sidebar">
+
+                    <div class="settings-nav active" data-section="appearance">
+                        🎨 Appearance
+                    </div>
+
+                    <div class="settings-nav" data-section="sound">
+                        🔊 Sound
+                    </div>
+
+                    <div class="settings-nav" data-section="network">
+                        📶 Network
+                    </div>
+
+                    <div class="settings-nav" data-section="battery">
+                        🔋 Battery
+                    </div>
+
+                    <div class="settings-nav" data-section="about">
+                        ℹ️ About
+                    </div>
+
+                </aside>
+
+
+                <main class="settings-content">
+
+
+                    <!-- APPEARANCE -->
+
+                    <section
+                        class="settings-section active"
+                        id="settings-appearance"
+                    >
+
+                        <h2>Appearance</h2>
+
+                        <p class="settings-description">
+                            Customize how CobraOS looks.
+                        </p>
+
+
+                        <div class="setting-card">
+
+                            <div>
+                                <strong>Theme</strong>
+
+                                <p>
+                                    Choose the appearance of CobraOS.
+                                </p>
+                            </div>
+
+                            <select id="theme-select">
+
+                                <option value="dark">
+                                    Dark
+                                </option>
+
+                                <option value="light">
+                                    Light
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="setting-card">
+
+                            <div>
+                                <strong>Accent Color</strong>
+
+                                <p>
+                                    Choose your CobraOS accent color.
+                                </p>
+                            </div>
+
+                            <input
+                                type="color"
+                                id="accent-color"
+                                value="#5865f2"
+                            >
+
+                        </div>
+
+
+                        <div class="setting-card">
+
+                            <div>
+                                <strong>Animations</strong>
+
+                                <p>
+                                    Enable interface animations.
+                                </p>
+                            </div>
+
+                            <label class="toggle">
+
+                                <input
+                                    type="checkbox"
+                                    id="animations-toggle"
+                                    checked
+                                >
+
+                                <span></span>
+
+                            </label>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- SOUND -->
+
+                    <section
+                        class="settings-section"
+                        id="settings-sound"
+                    >
+
+                        <h2>Sound</h2>
+
+                        <p class="settings-description">
+                            Manage CobraOS audio settings.
+                        </p>
+
+
+                        <div class="setting-card">
+
+                            <div>
+                                <strong>System Volume</strong>
+
+                                <p>
+                                    Adjust system volume.
+                                </p>
+                            </div>
+
+                            <input
+                                type="range"
+                                id="settings-volume"
+                                min="0"
+                                max="100"
+                                value="70"
+                            >
+
+                        </div>
+
+
+                        <div class="setting-card">
+
+                            <div>
+                                <strong>System Sounds</strong>
+
+                                <p>
+                                    Play sounds for system actions.
+                                </p>
+                            </div>
+
+                            <label class="toggle">
+
+                                <input
+                                    type="checkbox"
+                                    id="system-sounds"
+                                    checked
+                                >
+
+                                <span></span>
+
+                            </label>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- NETWORK -->
+
+                    <section
+                        class="settings-section"
+                        id="settings-network"
+                    >
+
+                        <h2>Network</h2>
+
+                        <p class="settings-description">
+                            Check your network connection.
+                        </p>
+
+
+                        <div class="setting-card">
+
+                            <div>
+                                <strong>Connection</strong>
+
+                                <p id="settings-network-status">
+                                    Checking...
+                                </p>
+                            </div>
+
+                            <span id="settings-network-icon">
+                                📶
+                            </span>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- BATTERY -->
+
+                    <section
+                        class="settings-section"
+                        id="settings-battery"
+                    >
+
+                        <h2>Battery</h2>
+
+                        <p class="settings-description">
+                            View your device battery status.
+                        </p>
+
+
+                        <div class="setting-card">
+
+                            <div>
+                                <strong>Battery Level</strong>
+
+                                <p id="settings-battery-level">
+                                    Checking...
+                                </p>
+                            </div>
+
+                            <span>
+                                🔋
+                            </span>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ABOUT -->
+
+                    <section
+                        class="settings-section"
+                        id="settings-about"
+                    >
+
+                        <h2>About CobraOS</h2>
+
+                        <p class="settings-description">
+                            Your personal web-based operating system.
+                        </p>
+
+
+                        <div class="about-card">
+
+                            <div class="about-logo">
+                                C
+                            </div>
+
+                            <h3>CobraOS</h3>
+
+                            <p>
+                                WebOS 1
+                            </p>
+
+                            <p>
+                                Built by SnaggingCobra
+                            </p>
+
+                            <p class="version">
+                                Version 1.0
+                            </p>
+
+                        </div>
+
+                    </section>
+
+
+                </main>
+
             </div>
 
         </div>
