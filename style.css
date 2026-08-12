@@ -14,11 +14,9 @@ body {
 .welcome-screen {
     position: fixed;
     inset: 0;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     background: url("images/CobraOS.png") center / cover no-repeat;
 }
 
@@ -26,23 +24,19 @@ button {
     border: none;
     border-radius: 8px;
     padding: 10px 16px;
-
     background: #5865f2;
     color: white;
-
     cursor: pointer;
 }
 #start-button {
     position: absolute;
-
     left: 50%;
     top: 73%;
-
     transform: translate(-50%, -50%);
 }
 button:hover {
     background: #4752c4;
-    transform: translateY(-2px);
+    transform: translateY(-5px);
 }
 button:active {
     transform: translateY(0);
@@ -51,35 +45,25 @@ button:active {
 
 .desktop {
     display: none;
-
     position: fixed;
     inset: 0;
-
     width: 100%;
     height: 100%;
-
     background: url("images/desktop.png") center / cover no-repeat;
 }
 
 .top-bar {
     position: absolute;
-
     top: 0;
     left: 0;
-
     width: 100%;
     height: 50px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 0 20px;
-
     background: rgba(10, 12, 25, 0.75);
-
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
     backdrop-filter: blur(12px);
 }
 .os-name {
@@ -100,7 +84,6 @@ button:active {
     position: absolute;
     left: 45%;
     transform: translateX(-50%);
-
     font-size: 14px;
     color: rgba(255, 255, 255, 0.8);
 }
@@ -134,12 +117,11 @@ button:active {
     display: flex;
     align-items: center;
     justify-content: center;
-
     border-radius: 10px;
     font-size: 22px;
     cursor: pointer;
     transition: transform 0.2s ease;
 }
 .dock-icon:hover {
-    transform: translateY(-8px) scale(1.1);
+    transform: translateY(-12px) scale(1.6);
 }
