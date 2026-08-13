@@ -90,7 +90,7 @@
         </header>
 
 
-        <!- APPLICATION DOCK -->
+        <!-- APPLICATION DOCK -->
 
         <nav
             class="dock"
@@ -301,53 +301,69 @@
 
                 <aside class="files-sidebar">
 
-                    <div class="files-location active">
-                        🏠 Home
-                    </div>
+    <div class="files-location active" data-folder="Home">
+        🏠 Home
+    </div>
 
-                    <div class="files-location">
-                        🖥️ Desktop
-                    </div>
+    <div class="files-location" data-folder="Desktop">
+        🖥️ Desktop
+    </div>
 
-                    <div class="files-location">
-                        📄 Documents
-                    </div>
+    <div class="files-location" data-folder="Documents">
+        📄 Documents
+    </div>
 
-                    <div class="files-location">
-                        ⬇️ Downloads
-                    </div>
+    <div class="files-location" data-folder="Downloads">
+        ⬇️ Downloads
+    </div>
 
-                    <div class="files-location">
-                        🎵 Music
-                    </div>
+    <div class="files-location" data-folder="Music">
+        🎵 Music
+    </div>
 
-                </aside>
+</aside>
 
 
                 <main class="files-content">
 
-                    <div class="files-toolbar">
+                <div class="files-toolbar">
 
-                        <span>
-                            Home
-                        </span>
-
+                    <div class="files-breadcrumb">
+                        <button id="files-back" type="button">←</button>
+                        <span id="files-path">Home</span>
                     </div>
 
+                    <div class="files-actions">
+                        <button id="create-folder" type="button">
+                            📁 New Folder
+                        </button>
 
-                    <div class="file-grid">
+                        <label class="upload-file-button">
+                            📄 Upload
+                            <input
+                                type="file"
+                                id="file-upload"
+                                multiple
+                            >
+                        </label>
+                    </div>
 
-                        <div class="file-item">
+                </div>
 
-                            <div class="file-icon">
-                                📁
-                            </div>
 
-                            <span>
-                                Desktop
-                            </span>
+                    <div class="file-grid" id="file-grid">
 
-                        </div>
+                        <div class="file-item" data-folder="Desktop">
+
+    <div class="file-icon">
+        📁
+    </div>
+
+    <span>
+        Desktop
+    </span>
+
+</div>
 
 
                         <div class="file-item">

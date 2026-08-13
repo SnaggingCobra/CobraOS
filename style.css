@@ -35,11 +35,14 @@ button {
     left: 50%;
     top: 73%;
     transform: translate(-50%, -50%);
+
 }
-button:hover {
+
+button:hover 
+{
     background: #4752c4;
-    transform: translateY(-5px);
 }
+
 button:active {
     transform: translateY(0);
 }
@@ -709,4 +712,193 @@ button:active {
     min-width: 35px;
     font-size: 12px;
     color: rgba(255, 255, 255, 0.8);
+}
+
+
+body[data-theme="light"] {
+    color: #1f2937;
+}
+
+body[data-theme="light"] .desktop {
+    background: url("images/desktop.png") center / cover no-repeat;
+}
+
+body[data-theme="light"] .top-bar {
+    background: rgba(255, 255, 255, 0.78);
+    color: #111827;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body[data-theme="light"] .os-name,
+body[data-theme="light"] .clock,
+body[data-theme="light"] .date,
+body[data-theme="light"] .system-status {
+    color: #111827;
+}
+
+body[data-theme="light"] .dock {
+    background: rgba(255, 255, 255, 0.82);
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+body[data-theme="light"] .app-window {
+    background: rgba(248, 249, 252, 0.97);
+    color: #111827;
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+body[data-theme="light"] .window-header {
+    background: rgba(0, 0, 0, 0.06);
+    color: #111827;
+}
+
+body[data-theme="light"] .window-controls button {
+    color: #111827;
+}
+
+body[data-theme="light"] .browser-toolbar {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+body[data-theme="light"] #browser-url {
+    background: rgba(0, 0, 0, 0.06);
+    color: #111827;
+}
+
+body[data-theme="light"] .files-sidebar,
+body[data-theme="light"] .settings-sidebar {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body[data-theme="light"] .files-content,
+body[data-theme="light"] .settings-body,
+body[data-theme="light"] #notes-editor,
+body[data-theme="light"] .music-content {
+    background: #f8f9fc;
+    color: #111827;
+}
+
+body[data-theme="light"] .files-location,
+body[data-theme="light"] .file-item,
+body[data-theme="light"] .settings-nav {
+    color: #374151;
+}
+
+body[data-theme="light"] .files-location:hover,
+body[data-theme="light"] .files-location.active,
+body[data-theme="light"] .file-item:hover,
+body[data-theme="light"] .settings-nav:hover {
+    background: rgba(0, 0, 0, 0.07);
+}
+
+body[data-theme="light"] .setting-card,
+body[data-theme="light"] .about-card {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+body[data-theme="light"] .setting-card p,
+body[data-theme="light"] .settings-description,
+body[data-theme="light"] .about-card p {
+    color: rgba(0, 0, 0, 0.55);
+}
+
+body[data-theme="light"] #theme-select {
+    background: rgba(0, 0, 0, 0.08);
+    color: #111827;
+}
+
+body[data-theme="light"] .notes-toolbar {
+    background: rgba(0, 0, 0, 0.05);
+    color: #374151;
+}
+
+body[data-theme="light"] #notes-editor::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+body[data-theme="light"] .volume-popup {
+    background: rgba(255, 255, 255, 0.96);
+    color: #111827;
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+.files-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.files-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.files-breadcrumb button {
+    padding: 6px 9px;
+}
+
+.files-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.files-actions button,
+.upload-file-button {
+    border: none;
+    border-radius: 7px;
+    padding: 7px 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.files-actions button:hover,
+.upload-file-button:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.upload-file-button input {
+    display: none;
+}
+
+.file-item {
+    position: relative;
+}
+
+.file-item .file-name {
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.file-item.folder .file-icon {
+    cursor: pointer;
+}
+
+.file-item.file .file-icon {
+    cursor: default;
+}
+
+.file-delete {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    display: none;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border-radius: 50%;
+    background: rgba(220, 38, 38, 0.9);
+    font-size: 12px;
+}
+
+.file-item:hover .file-delete {
+    display: block;
 }

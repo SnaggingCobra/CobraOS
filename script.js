@@ -29,10 +29,7 @@ function updateDate() {
 
 function updateTime() {
     const timeElement = document.getElementById("clock");
-
-    if (!timeElement) {
-        return;
-    }
+    if (!timeElement) return;
 
     const now = new Date();
 
@@ -353,9 +350,6 @@ function setupWindow(name) {
 
     windowElement.addEventListener("mousedown", () => {
         bringToFront(windowElement);
-
-
-        
     });
 
     return windowElement;
@@ -711,8 +705,6 @@ async function updateSettingsBattery() {
 
     if (!batteryLevel || !navigator.getBattery) {
         return;
-
-
     }
 
     try {
@@ -743,3 +735,347 @@ window.addEventListener("beforeunload", () => {
     }
 });
 
+
+/* =========================
+   FILE MANAGER
+========================= */
+
+const fileGrid = document.getElementById("file-grid");
+const filesPath = document.getElementById("files-path");
+const filesBack = document.getElementById("files-back");
+const createFolderButton = document.getElementById("create-folder");
+const fileUpload = document.getElementById("file-upload");
+
+let currentPath = [];
+
+let fileSystem = JSON.parse(
+    localStorage.getItem("cobraos-filesystem")
+) || {
+    type: "folder",
+    name: "Home",
+    children: [
+        {
+            type: "folder",
+            name: "Desktop",
+            children: []
+        },
+        {
+            type: "folder",
+            name: "Documents",
+            children: []
+        },
+        {
+            type: "folder",
+            name: "Downloads",
+            children: []
+        },
+        {
+            type: "folder",
+            name: "Music",
+            children: []
+        }
+    ]
+};
+
+function saveFileSystem() {
+    localStorage.setItem(
+        "cobraos-filesystem",
+        JSON.stringify(fileSystem)
+    );
+}
+
+function getCurrentFolder() {
+    let folder = fileSystem;
+
+    for (const folderName of currentPath) {
+        const nextFolder = folder.children.find(
+            item =>
+                item.type === "folder" &&
+                item.name === folderName
+        );
+
+        if (!nextFolder) {
+            return fileSystem;
+        }
+
+        folder = nextFolder;
+    }
+
+    return folder;
+}
+
+
+/* =========================
+   FILE EXPLORER SIDEBAR
+========================= */
+
+const filesLocations = document.querySelectorAll(".files-location");
+
+function updateFileSidebar() {
+
+    filesLocations.forEach((location) => {
+
+        const folderName = location.dataset.folder;
+
+        location.classList.toggle(
+            "active",
+            currentPath.length === 0
+                ? folderName === "Home"
+                : folderName === currentPath[0]
+        );
+
+    });
+}
+
+
+function renderFiles() {
+    if (!fileGrid) {
+        return;
+    }
+
+    const folder = getCurrentFolder();
+
+    fileGrid.innerHTML = "";
+
+    if (filesPath) {
+        filesPath.textContent =
+            currentPath.length === 0
+                ? "Home"
+                : `Home / ${currentPath.join(" / ")}`;
+    }
+
+    if (filesBack) {
+        filesBack.disabled = currentPath.length === 0;
+    }
+
+    folder.children.forEach((item, index) => {
+        const element = document.createElement("div");
+
+        element.className =
+            `file-item ${item.type}`;
+
+        const icon = document.createElement("div");
+
+        icon.className = "file-icon";
+
+        icon.textContent =
+            item.type === "folder"
+                ? "📁"
+                : getFileIcon(item.name);
+
+        const name = document.createElement("span");
+
+        name.className = "file-name";
+        name.textContent = item.name;
+
+        const deleteButton =
+            document.createElement("button");
+
+        deleteButton.className = "file-delete";
+        deleteButton.textContent = "×";
+        deleteButton.title = "Delete";
+
+        deleteButton.addEventListener("click", event => {
+            event.stopPropagation();
+
+            const confirmed = confirm(
+                `Delete "${item.name}"?`
+            );
+
+            if (!confirmed) {
+                return;
+            }
+
+            folder.children.splice(index, 1);
+
+            saveFileSystem();
+            renderFiles();
+        });
+
+        element.appendChild(icon);
+        element.appendChild(name);
+        element.appendChild(deleteButton);
+
+        if (item.type === "folder") {
+            element.addEventListener("dblclick", () => {
+
+                currentPath.push(item.name);
+
+                updateFileSidebar();
+
+                renderFiles();
+            });
+        }
+
+        fileGrid.appendChild(element);
+    });
+}
+
+function getFileIcon(filename) {
+    const extension =
+        filename.split(".").pop().toLowerCase();
+
+    const icons = {
+        pdf: "📕",
+        txt: "📄",
+        doc: "📘",
+        docx: "📘",
+        jpg: "🖼️",
+        jpeg: "🖼️",
+        png: "🖼️",
+        gif: "🖼️",
+        mp3: "🎵",
+        wav: "🎵",
+        mp4: "🎬",
+        webm: "🎬",
+        zip: "🗜️",
+        rar: "🗜️",
+        js: "📜",
+        html: "🌐",
+        css: "🎨",
+        json: "📋"
+    };
+
+    return icons[extension] || "📄";
+}
+
+if (createFolderButton) {
+    createFolderButton.addEventListener("click", () => {
+        const name = prompt("Enter folder name:");
+
+        if (!name) {
+            return;
+        }
+
+        const folder = getCurrentFolder();
+
+        const exists = folder.children.some(
+            item => item.name === name
+        );
+
+        if (exists) {
+            alert("A file or folder with that name already exists.");
+            return;
+        }
+
+        folder.children.push({
+            type: "folder",
+            name: name,
+            children: []
+        });
+
+        saveFileSystem();
+        renderFiles();
+    });
+}
+
+if (fileUpload) {
+    fileUpload.addEventListener("change", () => {
+        const files = Array.from(fileUpload.files);
+
+        if (!files.length) {
+            return;
+        }
+
+        const folder = getCurrentFolder();
+
+        files.forEach(file => {
+            const exists = folder.children.some(
+                item => item.name === file.name
+            );
+
+            if (exists) {
+                return;
+            }
+
+            folder.children.push({
+                type: "file",
+                name: file.name,
+                size: file.size,
+                typeName: file.type
+            });
+        });
+
+        saveFileSystem();
+
+        fileUpload.value = "";
+
+        renderFiles();
+    });
+}
+
+if (filesBack) {
+    filesBack.addEventListener("click", () => {
+
+        if (currentPath.length === 0) {
+            return;
+        }
+
+        currentPath.pop();
+
+        updateFileSidebar();
+
+        renderFiles();
+    });
+}
+
+
+/* Sidebar folders */
+
+filesLocations.forEach((location) => {
+
+    location.addEventListener("click", () => {
+
+        const folderName = location.dataset.folder;
+
+        if (!folderName) {
+            return;
+        }
+
+        /*
+         * Home is the root of the file system.
+         */
+        if (folderName === "Home") {
+            currentPath = [];
+        } else {
+
+            /*
+             * Check that the folder actually exists
+             * inside Home.
+             */
+            const folderExists = fileSystem.children.some(
+                item =>
+                    item.type === "folder" &&
+                    item.name === folderName
+            );
+
+            if (!folderExists) {
+                return;
+            }
+
+            /*
+             * Open the selected folder.
+             */
+            currentPath = [folderName];
+        }
+
+        /*
+         * Update active sidebar item.
+         */
+        filesLocations.forEach((item) => {
+            item.classList.remove("active");
+        });
+
+        location.classList.add("active");
+
+        /*
+         * Re-render the actual file explorer.
+         */
+        renderFiles();
+    });
+
+});
+
+
+updateFileSidebar();
+renderFiles();
