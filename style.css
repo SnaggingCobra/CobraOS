@@ -448,9 +448,8 @@ button:active {
 #music-file-input {
     display: none;
 }
-/* ==============================
-   SETTINGS
-   ============================== */
+/*
+   SETTINGS*/
 
 .settings-window {
     width: 760px;
@@ -459,13 +458,9 @@ button:active {
 
 .settings-body {
     display: flex;
-
     flex: 1;
-
     min-height: 0;
-
     background: rgba(15, 18, 30, 0.97);
-
     color: white;
 }
 
@@ -474,39 +469,28 @@ button:active {
 
 .settings-sidebar {
     width: 190px;
-
     padding: 15px 10px;
-
     background: rgba(0, 0, 0, 0.25);
-
     border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .settings-nav {
     padding: 11px 13px;
-
     margin-bottom: 5px;
-
     border-radius: 8px;
-
     color: rgba(255, 255, 255, 0.7);
-
     font-size: 13px;
-
     cursor: pointer;
-
     transition: 0.2s;
 }
 
 .settings-nav:hover {
     background: rgba(255, 255, 255, 0.08);
-
     color: white;
 }
 
 .settings-nav.active {
     background: var(--accent-color, #5865f2);
-
     color: white;
 }
 
@@ -515,9 +499,7 @@ button:active {
 
 .settings-content {
     flex: 1;
-
     padding: 30px;
-
     overflow-y: auto;
 }
 
@@ -531,15 +513,12 @@ button:active {
 
 .settings-section h2 {
     margin: 0 0 7px;
-
     font-size: 24px;
 }
 
 .settings-description {
     margin: 0 0 25px;
-
     color: rgba(255, 255, 255, 0.5);
-
     font-size: 13px;
 }
 
@@ -548,33 +527,22 @@ button:active {
 
 .setting-card {
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
     gap: 20px;
-
     padding: 18px;
-
     margin-bottom: 12px;
-
     border-radius: 10px;
-
     background: rgba(255, 255, 255, 0.05);
-
     border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .setting-card strong {
     font-size: 14px;
 }
-
 .setting-card p {
     margin: 5px 0 0;
-
     color: rgba(255, 255, 255, 0.45);
-
     font-size: 12px;
 }
 
@@ -583,15 +551,10 @@ button:active {
 
 #theme-select {
     padding: 8px 12px;
-
     border: none;
-
     border-radius: 7px;
-
     background: rgba(255, 255, 255, 0.1);
-
     color: white;
-
     outline: none;
 }
 
@@ -601,13 +564,9 @@ button:active {
 #accent-color {
     width: 45px;
     height: 35px;
-
     padding: 2px;
-
     border: none;
-
     background: transparent;
-
     cursor: pointer;
 }
 
@@ -616,7 +575,6 @@ button:active {
 
 .toggle {
     position: relative;
-
     width: 42px;
     height: 23px;
 }
@@ -627,33 +585,22 @@ button:active {
 
 .toggle span {
     position: absolute;
-
     inset: 0;
-
     border-radius: 20px;
-
     background: rgba(255, 255, 255, 0.2);
-
     cursor: pointer;
-
     transition: 0.2s;
 }
 
 .toggle span::before {
     content: "";
-
     position: absolute;
-
     width: 17px;
     height: 17px;
-
     left: 3px;
     top: 3px;
-
     border-radius: 50%;
-
     background: white;
-
     transition: 0.2s;
 }
 
@@ -670,50 +617,96 @@ button:active {
 
 .about-card {
     padding: 35px;
-
     text-align: center;
-
     border-radius: 12px;
-
     background: rgba(255, 255, 255, 0.05);
 }
 
 .about-logo {
     width: 75px;
     height: 75px;
-
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     margin: 0 auto 15px;
-
     border-radius: 18px;
-
     background: var(--accent-color, #5865f2);
-
     font-size: 35px;
-
     font-weight: bold;
 }
 
 .about-card h3 {
     margin: 5px 0;
-
     font-size: 20px;
 }
 
 .about-card p {
     margin: 5px;
-
     color: rgba(255, 255, 255, 0.55);
-
     font-size: 13px;
 }
 
+
+
+
 .about-card .version {
     margin-top: 20px;
-
     font-size: 11px;
+}
+
+#logout-button {
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 16px;
+    padding: 4px 6px;
+    cursor: pointer;
+    opacity: 0.85;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+#logout-button:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+.volume-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#volume {
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 16px;
+    padding: 4px 6px;
+    cursor: pointer;
+}
+
+.volume-popup {
+    position: absolute;
+    top: 35px;
+    right: 0;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    min-width: 160px;
+    background: rgba(25, 25, 25, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+}
+
+#volume-slider {
+    width: 110px;
+    cursor: pointer;
+}
+
+#volume-value {
+    min-width: 35px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
 }

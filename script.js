@@ -1,16 +1,24 @@
-
 const startButton = document.getElementById("start-button");
 const welcomeScreen = document.querySelector(".welcome-screen");
 const desktop = document.querySelector(".desktop");
 
-startButton.addEventListener("click", () => {
-    welcomeScreen.style.display = "none";
-    desktop.style.display = "block";
-});
+let activeWindow = null;
+let highestZIndex = 100;
+
+if (startButton && welcomeScreen && desktop) {
+    startButton.addEventListener("click", () => {
+        welcomeScreen.style.display = "none";
+        desktop.style.display = "block";
+    });
+}
 
 function updateDate() {
-
     const dateElement = document.getElementById("date");
+
+    if (!dateElement) {
+        return;
+    }
+
     const now = new Date();
 
     dateElement.textContent = now.toLocaleDateString("en-US", {
@@ -19,24 +27,37 @@ function updateDate() {
     });
 }
 
-updateDate();
-
-function updateTime() 
-{
-
+function updateTime() {
     const timeElement = document.getElementById("clock");
+
+    if (!timeElement) {
+        return;
+    }
+
     const now = new Date();
+
     timeElement.textContent = now.toLocaleTimeString("en-US", {
         hour: "numeric",
         minute: "2-digit"
     });
 }
 
+updateDate();
 updateTime();
+
 setInterval(updateTime, 1000);
+setInterval(updateDate, 60000);
+
+const logoutButton = document.getElementById("logout-button");
+
+if (logoutButton && welcomeScreen && desktop) {
+    logoutButton.addEventListener("click", () => {
+        desktop.style.display = "none";
+        welcomeScreen.style.display = "flex";
+    });
+}
 
 async function updateBattery() {
-
     const batteryElement = document.getElementById("battery");
 
     if (!batteryElement) {
@@ -48,945 +69,677 @@ async function updateBattery() {
         return;
     }
 
-    const battery = await navigator.getBattery();
-    function updateBatteryDisplay() {
-        const percentage = Math.round(battery.level * 100);
-        batteryElement.textContent = `🔋 ${percentage}%`;
+    try {
+        const battery = await navigator.getBattery();
+
+        function updateBatteryDisplay() {
+            const percentage = Math.round(battery.level * 100);
+            batteryElement.textContent = `🔋 ${percentage}%`;
+        }
+
+        updateBatteryDisplay();
+
+        battery.addEventListener("levelchange", updateBatteryDisplay);
+    } catch {
+        batteryElement.textContent = "🔋 --%";
     }
-    updateBatteryDisplay();
-    battery.addEventListener("levelchange", updateBatteryDisplay);
 }
+
 updateBattery();
 
-function updateNetwork()
- {
+function updateNetwork() {
     const networkElement = document.getElementById("network");
+
     if (!networkElement) {
         return;
     }
-    if (navigator.onLine) {
-        networkElement.textContent = "📶";
-    } 
-    else {
-        networkElement.textContent = "❌";
-    }
+
+    networkElement.textContent = navigator.onLine ? "📶" : "❌";
 }
+
 updateNetwork();
 
 window.addEventListener("online", updateNetwork);
 window.addEventListener("offline", updateNetwork);
-
-
-
 
 const volumeButton = document.getElementById("volume");
 const volumePopup = document.getElementById("volume-popup");
 const volumeSlider = document.getElementById("volume-slider");
 const volumeValue = document.getElementById("volume-value");
 
-
-if (volumeButton && volumePopup) {
-
-    volumeButton.addEventListener("click", () => {
-        if (volumePopup.style.display === "flex") {
-            volumePopup.style.display = "none";
-        } 
-        else {
-
-            volumePopup.style.display = "flex";
-        }
-    });
-}
-
-if (volumeSlider && volumeValue) {
-
-    volumeSlider.addEventListener("input", () => {
-        const value = volumeSlider.value;
-        volumeValue.textContent = `${value}%`;
-        updateVolumeIcon(value);
-    });
-}
 function updateVolumeIcon(value) {
-
     if (!volumeButton) {
         return;
     }
 
-    if (value == 0) {
+    const volume = Number(value);
+
+    if (volume === 0) {
         volumeButton.textContent = "🔇";
-    } 
-    else if (value < 40) {
+    } else if (volume < 40) {
         volumeButton.textContent = "🔈";
-    } 
-    else if (value < 70) {
-
+    } else if (volume < 70) {
         volumeButton.textContent = "🔉";
-    } 
-    else 
-        {
+    } else {
         volumeButton.textContent = "🔊";
-        }
-}
-
-const browserIcon =
-    document.getElementById("browser-icon");
-
-const browserWindow =
-    document.getElementById("browser-window");
-
-const browserClose =
-    document.getElementById("browser-close");
-
-const browserMinimize =
-    document.getElementById("browser-minimize");
-
-const browserMaximize =
-    document.getElementById("browser-maximize");
-
-const browserHeader =
-    document.getElementById("browser-header");
-
-if (browserIcon && browserWindow) {
-
-    browserIcon.addEventListener("click", () => {
-        browserWindow.style.display = "flex";
-        browserWindow.style.zIndex = "200";
-    });
-}
-
-if (browserClose && browserWindow) {
-    browserClose.addEventListener("click", () => {
-        browserWindow.style.display = "none";
-    });
-}
-
-if (browserMinimize && browserWindow) {
-
-    browserMinimize.addEventListener("click", () => {
-        browserWindow.style.display = "none";
-
-    });
-
-}
-
-let isDragging = false;
-let offsetX = 0;
-let offsetY = 0;
-
-
-if (browserHeader && browserWindow) 
-    {
-    browserHeader.addEventListener("mousedown", (event) => {
-
-        if (event.target.closest(".window-controls")) {
-            return;
-        }
-        isDragging = true;
-        const rect =
-            browserWindow.getBoundingClientRect();
-        offsetX = event.clientX - rect.left;
-        offsetY = event.clientY - rect.top;
-        browserHeader.style.cursor = "grabbing";
-
-    });
-    document.addEventListener("mousemove", (event) => {
-        if (!isDragging) {
-            return;
-        }
-        browserWindow.style.left =
-            `${event.clientX - offsetX}px`
-        browserWindow.style.top =
-            `${event.clientY - offsetY}px`;
-        browserWindow.style.transform = "none";
-    });
-    document.addEventListener("mouseup", () => {
-        isDragging = false;
-        browserHeader.style.cursor = "grab";
-    });
-}
-
-let browserMaximized = false;
-
-if (browserMaximize && browserWindow) {
-    browserMaximize.addEventListener("click", () => {
-
-        if (!browserMaximized) 
-            {
-
-            browserWindow.style.left = "0";
-            browserWindow.style.top = "0";
-            browserWindow.style.width = "100%";
-            browserWindow.style.height = "calc(100% - 80px)";
-            browserWindow.style.transform = "none";
-            browserMaximized = true;
-            browserMaximize.textContent = "❐";
-        } 
-        else 
-            {
-
-            browserWindow.style.left = "50%";
-            browserWindow.style.top = "15%";
-            browserWindow.style.width = "70%";
-            browserWindow.style.height = "65%";
-            browserWindow.style.transform =
-                "translateX(-50%)";
-            browserMaximized = false;
-            browserMaximize.textContent = "□";
-            }
-    });
-}
-
-// Files
-
-
-const filesIcon =
-    document.getElementById("files-icon");
-
-const filesWindow =
-    document.getElementById("files-window");
-
-const filesClose =
-    document.getElementById("files-close");
-
-const filesMinimize =
-    document.getElementById("files-minimize");
-
-const filesMaximize =
-    document.getElementById("files-maximize");
-
-const filesHeader =
-    document.getElementById("files-header");
-
-
-
-if (filesIcon && filesWindow) 
-    {
-
-    filesIcon.addEventListener("click", () => {
-        filesWindow.style.display = "flex";
-        filesWindow.style.zIndex = "201";
-    });
-}
-
-
-
-if (filesClose && filesWindow) 
-    {
-
-    filesClose.addEventListener("click", () => {
-        filesWindow.style.display = "none";
-    });
-}
-
-
-
-
-if (filesMinimize && filesWindow) 
-    {
-
-    filesMinimize.addEventListener("click", () => {
-        filesWindow.style.display = "none";
-    });
-
-}
-
-
-// NOTES
-
-
-const notesIcon =
-    document.getElementById("notes-icon");
-
-const notesWindow =
-    document.getElementById("notes-window");
-
-const notesClose =
-    document.getElementById("notes-close");
-
-const notesMinimize =
-    document.getElementById("notes-minimize");
-
-const notesMaximize =
-    document.getElementById("notes-maximize");
-
-const notesEditor =
-    document.getElementById("notes-editor");
-
-const notesClear =
-    document.getElementById("notes-clear");
-
-const notesStatus =
-    document.getElementById("notes-status");
-
-
-    ////////////////////////////////////////
-if (notesIcon && notesWindow) {
-
-    notesIcon.addEventListener("click", () => {
-
-        notesWindow.style.display = "flex";
-        notesWindow.style.zIndex = "202";
-    });
-
-}
-
-
-if (notesClose && notesWindow) {
-
-    notesClose.addEventListener("click", () => {
-        notesWindow.style.display = "none";
-
-    });
-
-}
-
-if (notesMinimize && notesWindow) {
-
-    notesMinimize.addEventListener("click", () => {
-        notesWindow.style.display = "none";
-
-    });
-
-}
-
-if (notesEditor) {
-
-    const savedNotes =
-        localStorage.getItem("cobraos-notes");
-
-    if (savedNotes) 
-        {
-        notesEditor.value = savedNotes;
     }
 }
 
+if (volumeButton && volumePopup) {
+    volumeButton.addEventListener("click", (event) => {
+        event.stopPropagation();
 
-if (notesEditor) 
-    {
-    notesEditor.addEventListener("input", () => {
-
-        localStorage.setItem(
-            "cobraos-notes",
-            notesEditor.value
-        );
-
-        notesStatus.textContent = "Saved";
+        const isOpen = volumePopup.style.display === "flex";
+        volumePopup.style.display = isOpen ? "none" : "flex";
     });
 }
 
+if (volumeSlider && volumeValue) {
+    volumeValue.textContent = `${volumeSlider.value}%`;
+    updateVolumeIcon(volumeSlider.value);
 
-if (notesClear) {
+    volumeSlider.addEventListener("input", () => {
+        const value = volumeSlider.value;
 
+        volumeValue.textContent = `${value}%`;
+        updateVolumeIcon(value);
+    });
+}
+
+document.addEventListener("click", (event) => {
+    if (
+        volumePopup &&
+        volumeButton &&
+        !volumePopup.contains(event.target) &&
+        !volumeButton.contains(event.target)
+    ) {
+        volumePopup.style.display = "none";
+    }
+});
+
+function bringToFront(windowElement) {
+    if (!windowElement) {
+        return;
+    }
+
+    highestZIndex++;
+    windowElement.style.zIndex = highestZIndex;
+    activeWindow = windowElement;
+}
+
+function openWindow(windowElement) {
+    if (!windowElement) {
+        return;
+    }
+
+    windowElement.style.display = "flex";
+    bringToFront(windowElement);
+}
+
+function closeWindow(windowElement) {
+    if (!windowElement) {
+        return;
+    }
+
+    windowElement.style.display = "none";
+}
+
+function minimizeWindow(windowElement) {
+    if (!windowElement) {
+        return;
+    }
+
+    windowElement.style.display = "none";
+}
+
+function makeDraggable(windowElement, headerElement) {
+    if (!windowElement || !headerElement) {
+        return;
+    }
+
+    let dragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    headerElement.style.cursor = "grab";
+
+    headerElement.addEventListener("mousedown", (event) => {
+        if (event.target.closest(".window-controls")) {
+            return;
+        }
+
+        if (windowElement.classList.contains("maximized")) {
+            return;
+        }
+
+        dragging = true;
+
+        bringToFront(windowElement);
+
+        const rect = windowElement.getBoundingClientRect();
+
+        offsetX = event.clientX - rect.left;
+        offsetY = event.clientY - rect.top;
+
+        headerElement.style.cursor = "grabbing";
+
+        event.preventDefault();
+    });
+
+    document.addEventListener("mousemove", (event) => {
+        if (!dragging) {
+            return;
+        }
+
+        const maxX = window.innerWidth - windowElement.offsetWidth;
+        const maxY = window.innerHeight - windowElement.offsetHeight;
+
+        const x = Math.max(
+            0,
+            Math.min(event.clientX - offsetX, maxX)
+        );
+
+        const y = Math.max(
+            0,
+            Math.min(event.clientY - offsetY, maxY)
+        );
+
+        windowElement.style.left = `${x}px`;
+        windowElement.style.top = `${y}px`;
+        windowElement.style.transform = "none";
+    });
+
+    document.addEventListener("mouseup", () => {
+        if (!dragging) {
+            return;
+        }
+
+        dragging = false;
+        headerElement.style.cursor = "grab";
+    });
+}
+
+function makeMaximizable(windowElement, maximizeButton) {
+    if (!windowElement || !maximizeButton) {
+        return;
+    }
+
+    let maximized = false;
+
+    let previousState = {
+        left: "",
+        top: "",
+        width: "",
+        height: "",
+        transform: ""
+    };
+
+    maximizeButton.addEventListener("click", () => {
+        if (!maximized) {
+            previousState = {
+                left: windowElement.style.left,
+                top: windowElement.style.top,
+                width: windowElement.style.width,
+                height: windowElement.style.height,
+                transform: windowElement.style.transform
+            };
+
+            windowElement.classList.add("maximized");
+
+            windowElement.style.left = "0";
+            windowElement.style.top = "0";
+            windowElement.style.width = "100%";
+            windowElement.style.height = "calc(100% - 80px)";
+            windowElement.style.transform = "none";
+
+            maximizeButton.textContent = "❐";
+
+            maximized = true;
+        } else {
+            windowElement.classList.remove("maximized");
+
+            windowElement.style.left = previousState.left || "";
+            windowElement.style.top = previousState.top || "";
+            windowElement.style.width = previousState.width || "";
+            windowElement.style.height = previousState.height || "";
+            windowElement.style.transform = previousState.transform || "";
+
+            maximizeButton.textContent = "□";
+
+            maximized = false;
+        }
+
+        bringToFront(windowElement);
+    });
+}
+
+function setupWindow(name) {
+    const icon = document.getElementById(`${name}-icon`);
+    const windowElement = document.getElementById(`${name}-window`);
+    const closeButton = document.getElementById(`${name}-close`);
+    const minimizeButton = document.getElementById(`${name}-minimize`);
+    const maximizeButton = document.getElementById(`${name}-maximize`);
+    const header = document.getElementById(`${name}-header`);
+
+    if (!windowElement) {
+        return null;
+    }
+
+    if (icon) {
+        icon.addEventListener("click", () => {
+            openWindow(windowElement);
+        });
+    }
+
+    if (closeButton) {
+        closeButton.addEventListener("click", () => {
+            closeWindow(windowElement);
+        });
+    }
+
+    if (minimizeButton) {
+        minimizeButton.addEventListener("click", () => {
+            minimizeWindow(windowElement);
+        });
+    }
+
+    if (header) {
+        makeDraggable(windowElement, header);
+    }
+
+    if (maximizeButton) {
+        makeMaximizable(windowElement, maximizeButton);
+    }
+
+    windowElement.addEventListener("mousedown", () => {
+        bringToFront(windowElement);
+
+
+        
+    });
+
+    return windowElement;
+}
+
+const browserWindow = setupWindow("browser");
+const filesWindow = setupWindow("files");
+const notesWindow = setupWindow("notes");
+const musicWindow = setupWindow("music");
+const settingsWindow = setupWindow("settings");
+
+const browserFrame = document.getElementById("browser-frame");
+const browserUrl = document.getElementById("browser-url");
+const browserGo = document.getElementById("browser-go");
+
+function openBrowser(url) {
+    if (!browserFrame) {
+        return;
+    }
+
+    let address = url.trim();
+
+    if (!address) {
+        return;
+    }
+
+    if (!/^https?:\/\//i.test(address)) {
+        address = `https://${address}`;
+    }
+
+    browserFrame.src = address;
+}
+
+if (browserGo && browserUrl) {
+    browserGo.addEventListener("click", () => {
+        openBrowser(browserUrl.value);
+    });
+}
+
+if (browserUrl) {
+    browserUrl.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            openBrowser(browserUrl.value);
+        }
+    });
+}
+
+const notesEditor = document.getElementById("notes-editor");
+const notesClear = document.getElementById("notes-clear");
+const notesStatus = document.getElementById("notes-status");
+
+if (notesEditor) {
+    const savedNotes = localStorage.getItem("cobraos-notes");
+
+    if (savedNotes) {
+        notesEditor.value = savedNotes;
+    }
+
+    notesEditor.addEventListener("input", () => {
+        localStorage.setItem("cobraos-notes", notesEditor.value);
+
+        if (notesStatus) {
+            notesStatus.textContent = "Saved";
+        }
+    });
+}
+
+if (notesClear && notesEditor) {
     notesClear.addEventListener("click", () => {
         notesEditor.value = "";
         localStorage.removeItem("cobraos-notes");
-        notesStatus.textContent = "Cleared";
+
+        if (notesStatus) {
+            notesStatus.textContent = "Cleared";
+        }
     });
 }
 
-// MUSIC
+const musicPlay = document.getElementById("music-play");
+const musicPrevious = document.getElementById("music-previous");
+const musicNext = document.getElementById("music-next");
+const musicProgress = document.getElementById("music-progress");
+const musicVolume = document.getElementById("music-volume");
+const musicFileInput = document.getElementById("music-file-input");
+const musicTitle = document.getElementById("music-title");
+const musicArtist = document.getElementById("music-artist");
+const musicCurrentTime = document.getElementById("music-current-time");
+const musicDuration = document.getElementById("music-duration");
 
-
-const musicIcon =
-    document.getElementById("music-icon");
-
-const musicWindow =
-    document.getElementById("music-window");
-
-const musicClose =
-    document.getElementById("music-close");
-
-const musicMinimize =
-    document.getElementById("music-minimize");
-
-const musicMaximize =
-    document.getElementById("music-maximize");
-
-const musicPlay =
-    document.getElementById("music-play");
-
-const musicPrevious =
-    document.getElementById("music-previous");
-
-const musicNext =
-    document.getElementById("music-next");
-
-const musicProgress =
-    document.getElementById("music-progress");
-
-const musicVolume =
-    document.getElementById("music-volume");
-
-const musicFileInput =
-    document.getElementById("music-file-input");
-
-const musicTitle =
-    document.getElementById("music-title");
-
-const musicArtist =
-    document.getElementById("music-artist");
-
-const musicCurrentTime =
-    document.getElementById("music-current-time");
-
-const musicDuration =
-    document.getElementById("music-duration");
-
-
-let musicAudio = new Audio();
+const musicAudio = new Audio();
 
 let musicObjectURL = null;
 
-let musicPlaying = false;
+function formatMusicTime(seconds) {
+    if (!Number.isFinite(seconds)) {
+        return "0:00";
+    }
 
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
 
-if (musicIcon && musicWindow) {
-
-    musicIcon.addEventListener("click", () => {
-
-        musicWindow.style.display = "flex";
-
-        musicWindow.style.zIndex = "203";
-
-    });
-
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
 }
-
-if (musicClose) {
-
-    musicClose.addEventListener("click", () => {
-
-        musicWindow.style.display = "none";
-
-    });
-
-}
-
-if (musicMinimize) {
-
-    musicMinimize.addEventListener("click", () => {
-
-        musicWindow.style.display = "none";
-
-    });
-
-}
-
-
-
-// PLAY / PAUSE
-
 
 if (musicPlay) {
-
-    musicPlay.addEventListener("click", () => {
-
+    musicPlay.addEventListener("click", async () => {
         if (!musicAudio.src) {
             return;
         }
 
-        if (musicPlaying) {
-            musicAudio.pause();
-
-        } else {
-            musicAudio.play();
-
+        try {
+            if (musicAudio.paused) {
+                await musicAudio.play();
+            } else {
+                musicAudio.pause();
+            }
+        } catch (error) {
+            console.error("Unable to play audio:", error);
         }
-
     });
-
 }
 
-
-
-// PLAY
-
 musicAudio.addEventListener("play", () => {
-    musicPlaying = true;
-    musicPlay.textContent = "⏸";
-
+    if (musicPlay) {
+        musicPlay.textContent = "⏸";
+    }
 });
 
 musicAudio.addEventListener("pause", () => {
-    musicPlaying = false;
-    musicPlay.textContent = "▶";
-
+    if (musicPlay) {
+        musicPlay.textContent = "▶";
+    }
 });
-
-// LOAD MUSIC FILE
-
 
 if (musicFileInput) {
     musicFileInput.addEventListener("change", () => {
-
         const file = musicFileInput.files[0];
+
         if (!file) {
             return;
         }
+
         if (musicObjectURL) {
-
             URL.revokeObjectURL(musicObjectURL);
-
         }
-        musicObjectURL =
-            URL.createObjectURL(file);
 
+        musicObjectURL = URL.createObjectURL(file);
         musicAudio.src = musicObjectURL;
 
-        musicTitle.textContent =
-            file.name;
+        if (musicTitle) {
+            musicTitle.textContent = file.name;
+        }
 
-        musicArtist.textContent =
-            "Local file";
+        if (musicArtist) {
+            musicArtist.textContent = "Local file";
+        }
 
         musicAudio.load();
     });
-
 }
-
-// DURATION
-
 
 musicAudio.addEventListener("loadedmetadata", () => {
-
-    musicProgress.max =
-        musicAudio.duration;
-
-    musicDuration.textContent =
-        formatMusicTime(musicAudio.duration);
-
-});
-
-
-
-// PROGRESS
-
-musicAudio.addEventListener("timeupdate", () => {
-
-    musicProgress.value =
-        musicAudio.currentTime;
-
-    musicCurrentTime.textContent =
-        formatMusicTime(musicAudio.currentTime);
-
-});
-
-
-if (musicProgress) {
-
-    musicProgress.addEventListener("input", () => {
-        musicAudio.currentTime =
-            musicProgress.value;
-
-    });
-
-}
-
-// VOLUME
-
-
-if (musicVolume) {
-
-    musicVolume.addEventListener("input", () => {
-
-        musicAudio.volume =
-            musicVolume.value;
-
-    });
-
-}
-
-
-function formatMusicTime(seconds) {
-
-    if (!seconds || isNaN(seconds)) {
-        return "0:00";
+    if (musicProgress) {
+        musicProgress.max = musicAudio.duration;
+        musicProgress.value = 0;
     }
 
-    const minutes =
-        Math.floor(seconds / 60);
+    if (musicDuration) {
+        musicDuration.textContent = formatMusicTime(musicAudio.duration);
+    }
+});
 
-    const remainingSeconds =
-        Math.floor(seconds % 60);
+musicAudio.addEventListener("timeupdate", () => {
+    if (musicProgress) {
+        musicProgress.value = musicAudio.currentTime;
+    }
 
-    return `${minutes}:${remainingSeconds
-        .toString()
-        .padStart(2, "0")}`;
+    if (musicCurrentTime) {
+        musicCurrentTime.textContent =
+            formatMusicTime(musicAudio.currentTime);
+    }
+});
 
+if (musicProgress) {
+    musicProgress.addEventListener("input", () => {
+        musicAudio.currentTime = Number(musicProgress.value);
+    });
 }
 
+if (musicVolume) {
+    musicAudio.volume = Number(musicVolume.value);
 
-
-// PREVIOUS / NEXT
+    musicVolume.addEventListener("input", () => {
+        musicAudio.volume = Number(musicVolume.value);
+    });
+}
 
 if (musicPrevious) {
-
     musicPrevious.addEventListener("click", () => {
         musicAudio.currentTime = 0;
     });
-
 }
 
-
 if (musicNext) {
-
     musicNext.addEventListener("click", () => {
         musicAudio.currentTime = 0;
     });
-
 }
 
+musicAudio.addEventListener("ended", () => {
+    if (musicProgress) {
+        musicProgress.value = 0;
+    }
 
-// SETTINGS
+    if (musicCurrentTime) {
+        musicCurrentTime.textContent = "0:00";
+    }
 
-
-const settingsIcon =
-    document.getElementById("settings-icon");
-
-const settingsWindow =
-    document.getElementById("settings-window");
-
-const settingsClose =
-    document.getElementById("settings-close");
-
-const settingsMinimize =
-    document.getElementById("settings-minimize");
-
-const settingsMaximize =
-    document.getElementById("settings-maximize");
-
-
-// OPEN SETTINGS
-
-if (settingsIcon && settingsWindow) {
-
-    settingsIcon.addEventListener("click", () => {
-
-        settingsWindow.style.display = "flex";
-
-        settingsWindow.style.zIndex = "204";
-
-    });
-
-}
-
-
-
-// CLOSE
-
-if (settingsClose) {
-
-    settingsClose.addEventListener("click", () => {
-
-        settingsWindow.style.display = "none";
-
-    });
-
-}
-
-
-// MINIMIZE
-
-
-if (settingsMinimize) {
-
-    settingsMinimize.addEventListener("click", () => {
-
-        settingsWindow.style.display = "none";
-
-    });
-
-}
-
-
-
-// SETTINGS NAVIGATION
-
-const settingsNav =
-    document.querySelectorAll(".settings-nav");
-
-const settingsSections =
-    document.querySelectorAll(".settings-section");
-
-
-settingsNav.forEach((nav) => {
-
-    nav.addEventListener("click", () => {
-
-        const section =
-            nav.dataset.section;
-
-
-        settingsNav.forEach((item) => {
-
-            item.classList.remove("active");
-
-        });
-
-
-        settingsSections.forEach((item) => {
-
-            item.classList.remove("active");
-
-        });
-
-
-        nav.classList.add("active");
-
-
-        const selectedSection =
-            document.getElementById(
-                `settings-${section}`
-            );
-
-
-        if (selectedSection) {
-
-            selectedSection.classList.add("active");
-
-        }
-
-    });
-
+    if (musicPlay) {
+        musicPlay.textContent = "▶";
+    }
 });
 
+const settingsNav = document.querySelectorAll(".settings-nav");
+const settingsSections = document.querySelectorAll(".settings-section");
 
-// THEME
+settingsNav.forEach((nav) => {
+    nav.addEventListener("click", () => {
+        const section = nav.dataset.section;
+        const selectedSection = document.getElementById(
+            `settings-${section}`
+        );
 
+        if (!selectedSection) {
+            return;
+        }
 
-const themeSelect =
-    document.getElementById("theme-select");
+        settingsNav.forEach((item) => {
+            item.classList.remove("active");
+        });
 
+        settingsSections.forEach((item) => {
+            item.classList.remove("active");
+        });
 
-const savedTheme =
-    localStorage.getItem("cobraos-theme");
+        nav.classList.add("active");
+        selectedSection.classList.add("active");
+    });
+});
 
+const themeSelect = document.getElementById("theme-select");
+const accentColor = document.getElementById("accent-color");
+const animationsToggle = document.getElementById("animations-toggle");
 
-if (savedTheme) {
-
-    themeSelect.value = savedTheme;
-
+function applyTheme(theme) {
+    document.body.dataset.theme = theme;
 }
-
 
 if (themeSelect) {
+    const savedTheme = localStorage.getItem("cobraos-theme");
+
+    if (savedTheme === "dark" || savedTheme === "light") {
+        themeSelect.value = savedTheme;
+        applyTheme(savedTheme);
+    } else {
+        applyTheme(themeSelect.value);
+    }
 
     themeSelect.addEventListener("change", () => {
+        const theme = themeSelect.value;
 
-        const theme =
-            themeSelect.value;
-
-        localStorage.setItem(
-            "cobraos-theme",
-            theme
-        );
-
-        document.body.dataset.theme =
-            theme;
-
+        localStorage.setItem("cobraos-theme", theme);
+        applyTheme(theme);
     });
-
 }
-
-
-
-// ACCENT COLOR
-
-
-const accentColor =
-    document.getElementById("accent-color");
-
-
-const savedAccent =
-    localStorage.getItem(
-        "cobraos-accent"
-    );
-
-
-if (savedAccent) {
-
-    accentColor.value =
-        savedAccent;
-
-    document.documentElement.style
-        .setProperty(
-            "--accent-color",
-            savedAccent
-        );
-
-}
-
 
 if (accentColor) {
+    const savedAccent = localStorage.getItem("cobraos-accent");
+
+    if (savedAccent) {
+        accentColor.value = savedAccent;
+    }
+
+    document.documentElement.style.setProperty(
+        "--accent-color",
+        accentColor.value
+    );
 
     accentColor.addEventListener("input", () => {
+        const color = accentColor.value;
 
-        const color =
-            accentColor.value;
-
-        document.documentElement.style
-            .setProperty(
-                "--accent-color",
-                color
-            );
-
-        localStorage.setItem(
-            "cobraos-accent",
+        document.documentElement.style.setProperty(
+            "--accent-color",
             color
         );
 
+        localStorage.setItem("cobraos-accent", color);
     });
-
 }
-
-
-
-// ANIMATIONS
-
-
-const animationsToggle =
-    document.getElementById(
-        "animations-toggle"
-    );
-
-
-const savedAnimations =
-    localStorage.getItem(
-        "cobraos-animations"
-    );
-
-
-if (savedAnimations !== null) {
-
-    animationsToggle.checked =
-        savedAnimations === "true";
-
-}
-
 
 if (animationsToggle) {
+    const savedAnimations =
+        localStorage.getItem("cobraos-animations");
 
-    animationsToggle.addEventListener(
-        "change",
-        () => {
+    if (savedAnimations !== null) {
+        animationsToggle.checked = savedAnimations === "true";
+    }
 
-            localStorage.setItem(
-                "cobraos-animations",
-                animationsToggle.checked
-            );
+    animationsToggle.addEventListener("change", () => {
+        localStorage.setItem(
+            "cobraos-animations",
+            animationsToggle.checked
+        );
 
-        }
-    );
-
+        document.body.classList.toggle(
+            "no-animations",
+            !animationsToggle.checked
+        );
+    });
 }
 
-
-// NETWORK STATUS
-
-
 function updateSettingsNetwork() {
+    const status = document.getElementById(
+        "settings-network-status"
+    );
 
-    const status =
-        document.getElementById(
-            "settings-network-status"
-        );
-
-    const icon =
-        document.getElementById(
-            "settings-network-icon"
-        );
-
+    const icon = document.getElementById(
+        "settings-network-icon"
+    );
 
     if (!status || !icon) {
         return;
     }
 
-
     if (navigator.onLine) {
-
-        status.textContent =
-            "Connected to the internet";
-
-        icon.textContent =
-            "📶";
-
+        status.textContent = "Connected to the internet";
+        icon.textContent = "📶";
     } else {
-
-        status.textContent =
-            "No internet connection";
-
-        icon.textContent =
-            "❌";
-
+        status.textContent = "No internet connection";
+        icon.textContent = "❌";
     }
-
 }
-
 
 updateSettingsNetwork();
 
-window.addEventListener(
-    "online",
-    updateSettingsNetwork
-);
-
-window.addEventListener(
-    "offline",
-    updateSettingsNetwork
-);
-
-
-// BATTERY STATUS
+window.addEventListener("online", updateSettingsNetwork);
+window.addEventListener("offline", updateSettingsNetwork);
 
 async function updateSettingsBattery() {
-
-    const batteryLevel =
-        document.getElementById(
-            "settings-battery-level"
-        );
-
-
-    if (!batteryLevel) {
-        return;
-    }
-
-
-    if (!navigator.getBattery) {
-
-        batteryLevel.textContent =
-            "Battery information unavailable";
-
-        return;
-
-    }
-
-
-    const battery =
-        await navigator.getBattery();
-
-
-    function updateBatteryText() {
-
-        const percentage =
-            Math.round(
-                battery.level * 100
-            );
-
-        batteryLevel.textContent =
-            `${percentage}%`;
-
-    }
-
-
-    updateBatteryText();
-
-
-    battery.addEventListener(
-        "levelchange",
-        updateBatteryText
+    const batteryLevel = document.getElementById(
+        "settings-battery-level"
     );
 
+    if (!batteryLevel || !navigator.getBattery) {
+        return;
+
+
+    }
+
+    try {
+        const battery = await navigator.getBattery();
+
+        function updateBatteryText() {
+            const percentage = Math.round(battery.level * 100);
+
+            batteryLevel.textContent = `${percentage}%`;
+        }
+
+        updateBatteryText();
+
+        battery.addEventListener(
+            "levelchange",
+            updateBatteryText
+        );
+    } catch {
+        batteryLevel.textContent = "Unavailable";
+    }
 }
 
-
 updateSettingsBattery();
+
+window.addEventListener("beforeunload", () => {
+    if (musicObjectURL) {
+        URL.revokeObjectURL(musicObjectURL);
+    }
+});
+

@@ -1,94 +1,300 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="CobraOS - A modern web-based operating system."
+    >
+
     <title>CobraOS</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
+    <!-- WELCOME SCREEN-->
+
     <main class="welcome-screen">
-        <button id="start-button">Start CobraOS</button>
+
+        <button id="start-button">
+            Start CobraOS
+        </button>
+
     </main>
 
+
+    <!-- COBRAOS DESKTOP-->
+
     <div class="desktop">
+
+
+
         <header class="top-bar">
-            <div class="os-name">CobraOS</div>
-            <div class="clock" id="clock">00:00</div>
-            <div class="date" id="date">Aug 12</div>
-            <div class="system-status">
 
-                <span>🔋 --%</span>
-                <span>📶</span>
-                <span>🔊</span>
-
+            <div class="os-name">
+                CobraOS
             </div>
-        </header>
 
-    <div class="dock">
 
-        <div class="dock-icon" id="files-icon">📁</div>
-        <div class="dock-icon" id="browser-icon">🌐</div>
-        <div class="dock-icon" id="notes-icon">📝</div>
-        <div class="dock-icon" id="music-icon">🎵</div>
-        <div class="dock-icon" id="images-icon">🖼️</div>
-        <div class="dock-icon" id="settings-icon">⚙️</div>
+            <div class="desktop-time">
 
-    </div>
-     
-            <div class="app-window browser-window" id="browser-window">
+                <div
+                    class="clock"
+                    id="clock"
+                >
+                    00:00
+                </div>
 
-            <div class="window-header" id="browser-header">
-
-                <span>🌐 CobraOS Browser</span>
-
-                <div class="window-controls">
-                    <button id="browser-minimize">−</button>
-                    <button id="browser-maximize">□</button>
-                    <button id="browser-close">×</button>
+                <div
+                    class="date"
+                    id="date"
+                >
+                    Aug 12
                 </div>
 
             </div>
 
+
+            <div class="system-status">
+                <button id="logout-button" title="Log out">⏻</button>
+                <span id="battery">
+                    🔋 --%
+                </span>
+
+                <span id="network">
+                    📶
+                </span>
+
+                <div class="volume-control">
+            <button id="volume">🔊</button>
+
+            <div class="volume-popup" id="volume-popup">
+                <input
+                    type="range"
+                    id="volume-slider"
+                    min="0"
+                    max="100"
+                    value="70"
+                >
+                <span id="volume-value">70%</span>
+            </div>
+        </div>
+
+            </div>
+
+        </header>
+
+
+        <!- APPLICATION DOCK -->
+
+        <nav
+            class="dock"
+            aria-label="CobraOS Applications"
+        >
+
+            <div
+                class="dock-icon"
+                id="files-icon"
+                title="Files"
+            >
+                📁
+            </div>
+
+
+            <div
+                class="dock-icon"
+                id="browser-icon"
+                title="Browser"
+            >
+                🌐
+            </div>
+
+
+            <div
+                class="dock-icon"
+                id="notes-icon"
+                title="Notes"
+            >
+                📝
+            </div>
+
+
+            <div
+                class="dock-icon"
+                id="music-icon"
+                title="Music"
+            >
+                🎵
+            </div>
+
+
+            <div
+                class="dock-icon"
+                id="settings-icon"
+                title="Settings"
+            >
+                ⚙️
+            </div>
+
+        </nav>
+
+
+        <section
+            class="app-window browser-window"
+            id="browser-window"
+            aria-label="CobraOS Browser"
+        >
+
+            <header
+                class="window-header"
+                id="browser-header"
+            >
+
+                <span>
+                    🌐 CobraOS Browser
+                </span>
+
+
+                <div class="window-controls">
+
+                    <button
+                        id="browser-minimize"
+                        type="button"
+                        aria-label="Minimize browser"
+                    >
+                        −
+                    </button>
+
+                    <button
+                        id="browser-maximize"
+                        type="button"
+                        aria-label="Maximize browser"
+                    >
+                        □
+                    </button>
+
+                    <button
+                        id="browser-close"
+                        type="button"
+                        aria-label="Close browser"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+            </header>
+
+
             <div class="browser-toolbar">
-                <button>←</button>
-                <button>→</button>
-                <button>↻</button>
+
+                <button
+                    type="button"
+                    aria-label="Back"
+                >
+                    ←
+                </button>
+
+                <button
+                    type="button"
+                    aria-label="Forward"
+                >
+                    →
+                </button>
+
+                <button
+                    type="button"
+                    aria-label="Reload"
+                >
+                    ↻
+                </button>
+
 
                 <input
                     type="text"
                     id="browser-url"
                     value="https://www.google.com"
+                    placeholder="Enter a URL"
+                    aria-label="Browser address"
                 >
 
-                <button id="browser-go">Go</button>
+
+                <button
+                    id="browser-go"
+                    type="button"
+                >
+                    Go
+                </button>
+
             </div>
+
 
             <div class="browser-content">
+
+
+
                 <iframe
                     id="browser-frame"
-                    src="https://www.google.com"
-                    title="CobraOS Browser">
-                </iframe>
+                    title="CobraOS Browser"
+                ></iframe>
+
             </div>
 
-        </div>
+        </section>
 
-           <div class="app-window files-window" id="files-window">
- 
-            <div class="window-header" id="files-header">
 
-                <span>📁 Files</span>
+        <!-- FILES-->
+
+        <section
+            class="app-window files-window"
+            id="files-window"
+            aria-label="CobraOS Files"
+        >
+
+            <header
+                class="window-header"
+                id="files-header"
+            >
+
+                <span>
+                    📁 Files
+                </span>
+
 
                 <div class="window-controls">
 
-                    <button id="files-minimize">−</button>
-                    <button id="files-maximize">□</button>
-                    <button id="files-close">×</button>
+                    <button
+                        id="files-minimize"
+                        type="button"
+                        aria-label="Minimize files"
+                    >
+                        −
+                    </button>
+
+                    <button
+                        id="files-maximize"
+                        type="button"
+                        aria-label="Maximize files"
+                    >
+                        □
+                    </button>
+
+                    <button
+                        id="files-close"
+                        type="button"
+                        aria-label="Close files"
+                    >
+                        ×
+                    </button>
 
                 </div>
 
-            </div>
+            </header>
 
 
             <div class="files-body">
@@ -112,10 +318,6 @@
                     </div>
 
                     <div class="files-location">
-                        🖼️ Pictures
-                    </div>
-
-                    <div class="files-location">
                         🎵 Music
                     </div>
 
@@ -125,34 +327,65 @@
                 <main class="files-content">
 
                     <div class="files-toolbar">
-                        <span>Home</span>
+
+                        <span>
+                            Home
+                        </span>
+
                     </div>
+
 
                     <div class="file-grid">
 
                         <div class="file-item">
-                            <div class="file-icon">📁</div>
-                            <span>Desktop</span>
+
+                            <div class="file-icon">
+                                📁
+                            </div>
+
+                            <span>
+                                Desktop
+                            </span>
+
                         </div>
 
-                        <div class="file-item">
-                            <div class="file-icon">📁</div>
-                            <span>Documents</span>
-                        </div>
 
                         <div class="file-item">
-                            <div class="file-icon">📁</div>
-                            <span>Downloads</span>
+
+                            <div class="file-icon">
+                                📁
+                            </div>
+
+                            <span>
+                                Documents
+                            </span>
+
                         </div>
 
-                        <div class="file-item">
-                            <div class="file-icon">📁</div>
-                            <span>Pictures</span>
-                        </div>
 
                         <div class="file-item">
-                            <div class="file-icon">📁</div>
-                            <span>Music</span>
+
+                            <div class="file-icon">
+                                📁
+                            </div>
+
+                            <span>
+                                Downloads
+                            </span>
+
+                        </div>
+
+
+                        <div class="file-item">
+
+                            <div class="file-icon">
+                                📁
+                            </div>
+
+                            <span>
+                                Music
+                            </span>
+
                         </div>
 
                     </div>
@@ -161,30 +394,71 @@
 
             </div>
 
-        </div>
+        </section>
 
-                <div class="app-window notes-window" id="notes-window">
 
-            <div class="window-header" id="notes-header">
+        <!--NOTES-->
 
-                <span>📝 CobraOS Notes</span>
+        <section
+            class="app-window notes-window"
+            id="notes-window"
+            aria-label="CobraOS Notes"
+        >
+
+            <header
+                class="window-header"
+                id="notes-header"
+            >
+
+                <span>
+                    📝 CobraOS Notes
+                </span>
+
 
                 <div class="window-controls">
 
-                    <button id="notes-minimize">−</button>
-                    <button id="notes-maximize">□</button>
-                    <button id="notes-close">×</button>
+                    <button
+                        id="notes-minimize"
+                        type="button"
+                        aria-label="Minimize notes"
+                    >
+                        −
+                    </button>
+
+                    <button
+                        id="notes-maximize"
+                        type="button"
+                        aria-label="Maximize notes"
+                    >
+                        □
+                    </button>
+
+                    <button
+                        id="notes-close"
+                        type="button"
+                        aria-label="Close notes"
+                    >
+                        ×
+                    </button>
 
                 </div>
 
-            </div>
+            </header>
 
 
             <div class="notes-toolbar">
 
-                <span id="notes-status">Saved</span>
+                <span id="notes-status">
+                    Saved
+                </span>
 
-                <button id="notes-clear">Clear</button>
+
+                <button
+                    id="notes-clear"
+                    type="button"
+                >
+                    Clear
+                </button>
 
             </div>
 
@@ -192,25 +466,59 @@
             <textarea
                 id="notes-editor"
                 placeholder="Start writing..."
+                aria-label="Notes editor"
             ></textarea>
 
-        </div>
+        </section>
 
-                    <div class="app-window music-window" id="music-window">
 
-            <div class="window-header" id="music-header">
+        <!-- MUSIC-->
 
-                <span>🎵 CobraOS Music</span>
+        <section
+            class="app-window music-window"
+            id="music-window"
+            aria-label="CobraOS Music"
+        >
+
+            <header
+                class="window-header"
+                id="music-header"
+            >
+
+                <span>
+                    🎵 CobraOS Music
+                </span>
+
 
                 <div class="window-controls">
 
-                    <button id="music-minimize">−</button>
-                    <button id="music-maximize">□</button>
-                    <button id="music-close">×</button>
+                    <button
+                        id="music-minimize"
+                        type="button"
+                        aria-label="Minimize music"
+                    >
+                        −
+                    </button>
+
+                    <button
+                        id="music-maximize"
+                        type="button"
+                        aria-label="Maximize music"
+                    >
+                        □
+                    </button>
+
+                    <button
+                        id="music-close"
+                        type="button"
+                        aria-label="Close music"
+                    >
+                        ×
+                    </button>
 
                 </div>
 
-            </div>
+            </header>
 
 
             <div class="music-content">
@@ -219,9 +527,15 @@
                     🎵
                 </div>
 
-                <h2 id="music-title">No song selected</h2>
 
-                <p id="music-artist">CobraOS Music</p>
+                <h2 id="music-title">
+                    No song selected
+                </h2>
+
+
+                <p id="music-artist">
+                    CobraOS Music
+                </p>
 
 
                 <input
@@ -230,32 +544,59 @@
                     min="0"
                     max="100"
                     value="0"
+                    aria-label="Music progress"
                 >
 
 
                 <div class="music-time">
 
-                    <span id="music-current-time">0:00</span>
+                    <span id="music-current-time">
+                        0:00
+                    </span>
 
-                    <span id="music-duration">0:00</span>
+                    <span id="music-duration">
+                        0:00
+                    </span>
 
                 </div>
 
 
                 <div class="music-controls">
 
-                    <button id="music-previous">⏮</button>
+                    <button
+                        id="music-previous"
+                        type="button"
+                        aria-label="Previous song"
+                    >
+                        ⏮
+                    </button>
 
-                    <button id="music-play">▶</button>
 
-                    <button id="music-next">⏭</button>
+                    <button
+                        id="music-play"
+                        type="button"
+                        aria-label="Play music"
+                    >
+                        ▶
+                    </button>
+
+
+                    <button
+                        id="music-next"
+                        type="button"
+                        aria-label="Next song"
+                    >
+                        ⏭
+                    </button>
 
                 </div>
 
 
                 <div class="music-volume">
 
-                    🔊
+                    <span>
+                        🔊
+                    </span>
 
                     <input
                         type="range"
@@ -264,6 +605,7 @@
                         max="1"
                         step="0.01"
                         value="1"
+                        aria-label="Music volume"
                     >
 
                 </div>
@@ -283,46 +625,94 @@
 
             </div>
 
-        </div>
+        </section>
 
-        <div class="app-window settings-window" id="settings-window">
 
-    <div class="window-header" id="settings-header">
+        <!-- SETTINGS-->
 
-        <span>⚙️ CobraOS Settings</span>
+        <section
+            class="app-window settings-window"
+            id="settings-window"
+            aria-label="CobraOS Settings"
+        >
 
-        <div class="window-controls">
+            <header
+                class="window-header"
+                id="settings-header"
+            >
 
-            <button id="settings-minimize">−</button>
-            <button id="settings-maximize">□</button>
-            <button id="settings-close">×</button>
+                <span>
+                    ⚙️ CobraOS Settings
+                </span>
 
-        </div>
 
-    </div>
+                <div class="window-controls">
+
+                    <button
+                        id="settings-minimize"
+                        type="button"
+                        aria-label="Minimize settings"
+                    >
+                        −
+                    </button>
+
+                    <button
+                        id="settings-maximize"
+                        type="button"
+                        aria-label="Maximize settings"
+                    >
+                        □
+                    </button>
+
+                    <button
+                        id="settings-close"
+                        type="button"
+                        aria-label="Close settings"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+            </header>
 
 
             <div class="settings-body">
 
                 <aside class="settings-sidebar">
 
-                    <div class="settings-nav active" data-section="appearance">
+                    <div
+                        class="settings-nav active"
+                        data-section="appearance"
+                    >
                         🎨 Appearance
                     </div>
 
-                    <div class="settings-nav" data-section="sound">
+                    <div
+                        class="settings-nav"
+                        data-section="sound"
+                    >
                         🔊 Sound
                     </div>
 
-                    <div class="settings-nav" data-section="network">
+                    <div
+                        class="settings-nav"
+                        data-section="network"
+                    >
                         📶 Network
                     </div>
 
-                    <div class="settings-nav" data-section="battery">
+                    <div
+                        class="settings-nav"
+                        data-section="battery"
+                    >
                         🔋 Battery
                     </div>
 
-                    <div class="settings-nav" data-section="about">
+                    <div
+                        class="settings-nav"
+                        data-section="about"
+                    >
                         ℹ️ About
                     </div>
 
@@ -332,14 +722,16 @@
                 <main class="settings-content">
 
 
-                    <!-- APPEARANCE -->
+                    <!-- Appearance -->
 
                     <section
                         class="settings-section active"
                         id="settings-appearance"
                     >
 
-                        <h2>Appearance</h2>
+                        <h2>
+                            Appearance
+                        </h2>
 
                         <p class="settings-description">
                             Customize how CobraOS looks.
@@ -349,12 +741,17 @@
                         <div class="setting-card">
 
                             <div>
-                                <strong>Theme</strong>
+
+                                <strong>
+                                    Theme
+                                </strong>
 
                                 <p>
                                     Choose the appearance of CobraOS.
                                 </p>
+
                             </div>
+
 
                             <select id="theme-select">
 
@@ -374,17 +771,23 @@
                         <div class="setting-card">
 
                             <div>
-                                <strong>Accent Color</strong>
+
+                                <strong>
+                                    Accent Color
+                                </strong>
 
                                 <p>
                                     Choose your CobraOS accent color.
                                 </p>
+
                             </div>
+
 
                             <input
                                 type="color"
                                 id="accent-color"
                                 value="#5865f2"
+                                aria-label="Accent color"
                             >
 
                         </div>
@@ -393,12 +796,17 @@
                         <div class="setting-card">
 
                             <div>
-                                <strong>Animations</strong>
+
+                                <strong>
+                                    Animations
+                                </strong>
 
                                 <p>
                                     Enable interface animations.
                                 </p>
+
                             </div>
+
 
                             <label class="toggle">
 
@@ -417,14 +825,16 @@
                     </section>
 
 
-                    <!-- SOUND -->
+                    <!-- Sound -->
 
                     <section
                         class="settings-section"
                         id="settings-sound"
                     >
 
-                        <h2>Sound</h2>
+                        <h2>
+                            Sound
+                        </h2>
 
                         <p class="settings-description">
                             Manage CobraOS audio settings.
@@ -434,12 +844,17 @@
                         <div class="setting-card">
 
                             <div>
-                                <strong>System Volume</strong>
+
+                                <strong>
+                                    System Volume
+                                </strong>
 
                                 <p>
                                     Adjust system volume.
                                 </p>
+
                             </div>
+
 
                             <input
                                 type="range"
@@ -447,6 +862,7 @@
                                 min="0"
                                 max="100"
                                 value="70"
+                                aria-label="System volume"
                             >
 
                         </div>
@@ -455,12 +871,17 @@
                         <div class="setting-card">
 
                             <div>
-                                <strong>System Sounds</strong>
+
+                                <strong>
+                                    System Sounds
+                                </strong>
 
                                 <p>
                                     Play sounds for system actions.
                                 </p>
+
                             </div>
+
 
                             <label class="toggle">
 
@@ -479,14 +900,16 @@
                     </section>
 
 
-                    <!-- NETWORK -->
+                    <!-- Network -->
 
                     <section
                         class="settings-section"
                         id="settings-network"
                     >
 
-                        <h2>Network</h2>
+                        <h2>
+                            Network
+                        </h2>
 
                         <p class="settings-description">
                             Check your network connection.
@@ -496,12 +919,17 @@
                         <div class="setting-card">
 
                             <div>
-                                <strong>Connection</strong>
+
+                                <strong>
+                                    Connection
+                                </strong>
 
                                 <p id="settings-network-status">
                                     Checking...
                                 </p>
+
                             </div>
+
 
                             <span id="settings-network-icon">
                                 📶
@@ -512,14 +940,16 @@
                     </section>
 
 
-                    <!-- BATTERY -->
+                    <!-- Battery -->
 
                     <section
                         class="settings-section"
                         id="settings-battery"
                     >
 
-                        <h2>Battery</h2>
+                        <h2>
+                            Battery
+                        </h2>
 
                         <p class="settings-description">
                             View your device battery status.
@@ -529,12 +959,17 @@
                         <div class="setting-card">
 
                             <div>
-                                <strong>Battery Level</strong>
+
+                                <strong>
+                                    Battery Level
+                                </strong>
 
                                 <p id="settings-battery-level">
                                     Checking...
                                 </p>
+
                             </div>
+
 
                             <span>
                                 🔋
@@ -545,14 +980,16 @@
                     </section>
 
 
-                    <!-- ABOUT -->
+                    <!-- About -->
 
                     <section
                         class="settings-section"
                         id="settings-about"
                     >
 
-                        <h2>About CobraOS</h2>
+                        <h2>
+                            About CobraOS
+                        </h2>
 
                         <p class="settings-description">
                             Your personal web-based operating system.
@@ -565,15 +1002,21 @@
                                 C
                             </div>
 
-                            <h3>CobraOS</h3>
+
+                            <h3>
+                                CobraOS
+                            </h3>
+
 
                             <p>
                                 WebOS 1
                             </p>
 
+
                             <p>
                                 Built by SnaggingCobra
                             </p>
+
 
                             <p class="version">
                                 Version 1.0
@@ -583,12 +1026,12 @@
 
                     </section>
 
-
                 </main>
 
             </div>
 
-        </div>
+        </section>
+
     </div>
 
     <script src="script.js"></script>
