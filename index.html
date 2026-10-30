@@ -141,6 +141,14 @@
                 ⚙️
             </div>
 
+            <div
+                class="dock-icon"
+                id="paint-icon"
+                title="Paint"
+            >
+                🎨
+            </div>
+
         </nav>
 
 
@@ -488,7 +496,6 @@
         </section>
 
 
-        <!-- MUSIC-->
 
         <section
             class="app-window music-window"
@@ -643,8 +650,6 @@
 
         </section>
 
-
-        <!-- SETTINGS-->
 
         <section
             class="app-window settings-window"
@@ -840,7 +845,6 @@
 
                     </section>
 
-
                     <!-- Sound -->
 
                     <section
@@ -931,11 +935,9 @@
                             Check your network connection.
                         </p>
 
-
                         <div class="setting-card">
 
                             <div>
-
                                 <strong>
                                     Connection
                                 </strong>
@@ -946,7 +948,6 @@
 
                             </div>
 
-
                             <span id="settings-network-icon">
                                 📶
                             </span>
@@ -955,14 +956,12 @@
 
                     </section>
 
-
                     <!-- Battery -->
 
                     <section
                         class="settings-section"
                         id="settings-battery"
                     >
-
                         <h2>
                             Battery
                         </h2>
@@ -971,9 +970,7 @@
                             View your device battery status.
                         </p>
 
-
                         <div class="setting-card">
-
                             <div>
 
                                 <strong>
@@ -986,7 +983,6 @@
 
                             </div>
 
-
                             <span>
                                 🔋
                             </span>
@@ -994,7 +990,6 @@
                         </div>
 
                     </section>
-
 
                     <!-- About -->
 
@@ -1010,7 +1005,6 @@
                         <p class="settings-description">
                             Your personal web-based operating system.
                         </p>
-
 
                         <div class="about-card">
 
@@ -1037,15 +1031,42 @@
                             <p class="version">
                                 Version 1.0
                             </p>
-
                         </div>
-
                     </section>
-
                 </main>
+            </div>
+        </section>
 
+        <section class="app-window paint-window" id="paint-window" aria-label="CobraOS Paint">
+            <header class="window-header" id="paint-header">
+                <span>CobraOS Paint</span>
+
+                <div class="window-controls">
+                    <button id="paint-minimize" type="button" aria-label="Minimize Paint">−</button>
+                    <button id="paint-maximize" type="button" aria-label="Maximize Paint">□</button>
+                    <button id="paint-close" type="button" aria-label="Close Paint">×</button>
+                </div>
+            </header>
+
+            <div class="paint-toolbar">
+                <label>
+                    Color
+                    <input type="color" id="paint-color" value="#202020">
+                </label>
+                <label>
+                    Brush
+                    <input type="range" id="paint-size" min="1" max="40" value="5">
+                </label>
+
+                <button id="paint-eraser" type="button" aria-pressed="false">Eraser</button>
+                <button id="paint-undo" type="button">Undo</button>
+                <button id="paint-clear" type="button">Clear</button>
+                <button id="paint-save" type="button">Save</button>
             </div>
 
+            <div class="paint-canvas-container">
+                <canvas id="paint-canvas" aria-label="Drawing canvas"></canvas>
+            </div>
         </section>
 
     </div>
@@ -1053,3 +1074,5 @@
     <script src="script.js"></script>
 </body>
 </html>
+
+

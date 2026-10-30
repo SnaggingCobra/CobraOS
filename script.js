@@ -360,6 +360,178 @@ const filesWindow = setupWindow("files");
 const notesWindow = setupWindow("notes");
 const musicWindow = setupWindow("music");
 const settingsWindow = setupWindow("settings");
+const paintWindow = setupWindow("paint");
+
+const paintCanvas = document.getElementById("paint-canvas");
+const paintColor = document.getElementById("paint-color");
+const paintSize = document.getElementById("paint-size");
+const paintEraser = document.getElementById("paint-eraser");
+const paintUndo = document.getElementById("paint-undo");
+const paintClear = document.getElementById("paint-clear");
+const paintSave = document.getElementById("paint-save");
+
+if (
+    paintCanvas && paintColor && paintSize && paintEraser &&
+    paintUndo && paintClear && paintSave
+) {
+    const paintContext = paintCanvas.getContext("2d", {
+        willReadFrequently: true
+    });
+    const undoStack = [];
+    let drawing = false;
+    let erasing = false;
+    let canvasReady = false;
+
+    function resizePaintCanvas() {
+        const bounds = paintCanvas.getBoundingClientRect();
+
+        if (!bounds.width || !bounds.height) {
+            return;
+        }
+
+        const pixelRatio = window.devicePixelRatio || 1;
+        const width = Math.round(bounds.width * pixelRatio);
+        const height = Math.round(bounds.height * pixelRatio);
+
+        if (paintCanvas.width === width && paintCanvas.height === height) {
+            return;
+        }
+
+        const previousCanvas = canvasReady ? document.createElement("canvas") : null;
+
+        if (previousCanvas) {
+            previousCanvas.width = paintCanvas.width;
+            previousCanvas.height = paintCanvas.height;
+            previousCanvas.getContext("2d").drawImage(paintCanvas, 0, 0);
+        }
+
+        paintCanvas.width = width;
+        paintCanvas.height = height;
+        paintContext.setTransform(1, 0, 0, 1, 0, 0);
+        paintContext.fillStyle = "#ffffff";
+        paintContext.fillRect(0, 0, width, height);
+
+        if (previousCanvas) {
+            paintContext.drawImage(previousCanvas, 0, 0, width, height);
+            undoStack.length = 0;
+        }
+
+        paintContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        paintContext.lineCap = "round";
+        paintContext.lineJoin = "round";
+        canvasReady = true;
+    }
+
+    function savePaintSnapshot() {
+        undoStack.push(
+            paintContext.getImageData(0, 0, paintCanvas.width, paintCanvas.height)
+        );
+
+        if (undoStack.length > 30) {
+            undoStack.shift();
+        }
+    }
+
+    function getPaintPoint(event) {
+        const bounds = paintCanvas.getBoundingClientRect();
+
+        return {
+            x: event.clientX - bounds.left,
+            y: event.clientY - bounds.top
+        };
+    }
+
+    paintCanvas.addEventListener("pointerdown", (event) => {
+        if (event.button !== 0) {
+            return;
+        }
+
+        event.preventDefault();
+        savePaintSnapshot();
+        drawing = true;
+        paintCanvas.setPointerCapture(event.pointerId);
+
+        const point = getPaintPoint(event);
+        paintContext.beginPath();
+        paintContext.moveTo(point.x, point.y);
+        paintContext.lineTo(point.x, point.y);
+        paintContext.strokeStyle = erasing ? "#ffffff" : paintColor.value;
+        paintContext.lineWidth = Number(paintSize.value);
+        paintContext.stroke();
+    });
+
+    paintCanvas.addEventListener("pointermove", (event) => {
+        if (!drawing) {
+            return;
+        }
+
+        const point = getPaintPoint(event);
+        paintContext.lineTo(point.x, point.y);
+        paintContext.stroke();
+    });
+
+    function stopPaintStroke() {
+        drawing = false;
+        paintContext.closePath();
+    }
+
+    paintCanvas.addEventListener("pointerup", stopPaintStroke);
+    paintCanvas.addEventListener("pointercancel", stopPaintStroke);
+
+    paintEraser.addEventListener("click", () => {
+        erasing = !erasing;
+        paintEraser.textContent = erasing ? "Draw" : "Eraser";
+        paintEraser.setAttribute("aria-pressed", String(erasing));
+    });
+
+    paintUndo.addEventListener("click", () => {
+        const previousImage = undoStack.pop();
+
+        if (previousImage) {
+            paintContext.putImageData(previousImage, 0, 0);
+        }
+    });
+
+    paintClear.addEventListener("click", () => {
+        savePaintSnapshot();
+        paintContext.save();
+        paintContext.setTransform(1, 0, 0, 1, 0, 0);
+        paintContext.fillStyle = "#ffffff";
+        paintContext.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+        paintContext.restore();
+    });
+
+    paintSave.addEventListener("click", () => {
+        paintCanvas.toBlob((blob) => {
+            if (!blob) {
+                return;
+            }
+
+            const downloadUrl = URL.createObjectURL(blob);
+            const downloadLink = document.createElement("a");
+            downloadLink.href = downloadUrl;
+            downloadLink.download = "cobraos-paint.png";
+            downloadLink.click();
+            URL.revokeObjectURL(downloadUrl);
+        }, "image/png");
+    });
+
+    if ("ResizeObserver" in window) {
+        new ResizeObserver(resizePaintCanvas).observe(
+            document.querySelector(".paint-canvas-container")
+        );
+    } else {
+        window.addEventListener("resize", resizePaintCanvas);
+    }
+
+    const paintIcon = document.getElementById("paint-icon");
+
+    if (paintIcon) {
+        paintIcon.addEventListener("click", () => {
+            requestAnimationFrame(resizePaintCanvas);
+        });
+    }
+}
 
 const browserFrame = document.getElementById("browser-frame");
 const browserUrl = document.getElementById("browser-url");
@@ -736,10 +908,6 @@ window.addEventListener("beforeunload", () => {
 });
 
 
-/* =========================
-   FILE MANAGER
-========================= */
-
 const fileGrid = document.getElementById("file-grid");
 const filesPath = document.getElementById("files-path");
 const filesBack = document.getElementById("files-back");
@@ -805,9 +973,6 @@ function getCurrentFolder() {
 }
 
 
-/* =========================
-   FILE EXPLORER SIDEBAR
-========================= */
 
 const filesLocations = document.querySelectorAll(".files-location");
 
@@ -1020,8 +1185,6 @@ if (filesBack) {
 }
 
 
-/* Sidebar folders */
-
 filesLocations.forEach((location) => {
 
     location.addEventListener("click", () => {
@@ -1032,17 +1195,10 @@ filesLocations.forEach((location) => {
             return;
         }
 
-        /*
-         * Home is the root of the file system.
-         */
         if (folderName === "Home") {
             currentPath = [];
         } else {
 
-            /*
-             * Check that the folder actually exists
-             * inside Home.
-             */
             const folderExists = fileSystem.children.some(
                 item =>
                     item.type === "folder" &&
@@ -1053,24 +1209,16 @@ filesLocations.forEach((location) => {
                 return;
             }
 
-            /*
-             * Open the selected folder.
-             */
+
             currentPath = [folderName];
         }
 
-        /*
-         * Update active sidebar item.
-         */
         filesLocations.forEach((item) => {
             item.classList.remove("active");
         });
 
         location.classList.add("active");
 
-        /*
-         * Re-render the actual file explorer.
-         */
         renderFiles();
     });
 
