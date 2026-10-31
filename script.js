@@ -361,6 +361,236 @@ const notesWindow = setupWindow("notes");
 const musicWindow = setupWindow("music");
 const settingsWindow = setupWindow("settings");
 const paintWindow = setupWindow("paint");
+const calculatorWindow = setupWindow("calculator");
+setupWindow("stopwatch");
+
+const calculatorDisplay = document.getElementById("calculator-display");
+const calculatorHistory = document.getElementById("calculator-history");
+const calculatorButtons = document.querySelector(".calculator-buttons");
+
+if (calculatorDisplay && calculatorHistory && calculatorButtons) {
+    let calculatorExpression = "";
+    let calculatorResultShown = false;
+
+    function renderCalculator() {
+        calculatorDisplay.textContent = calculatorExpression || "0";
+    }
+
+    function calculateExpression(expression) {
+        const tokens = expression.match(/(?:\d+\.?\d*|\.\d+|[+\-*/%])/g) || [];
+
+        if (tokens.join("") !== expression) {
+            throw new Error("Invalid expression");
+        }
+
+        let tokenIndex = 0;
+
+        function parseNumber() {
+            const token = tokens[tokenIndex++];
+
+            if (!token || !/^\d*\.?\d+$/.test(token) && !/^\d+\.$/.test(token)) {
+                throw new Error("Expected a number");
+            }
+
+            let value = Number(token);
+
+            while (tokens[tokenIndex] === "%") {
+                value /= 100;
+                tokenIndex++;
+            }
+
+            return value;
+        }
+
+        function parseUnary() {
+            if (tokens[tokenIndex] === "+") {
+                tokenIndex++;
+                return parseUnary();
+            }
+
+            if (tokens[tokenIndex] === "-") {
+                tokenIndex++;
+                return -parseUnary();
+            }
+
+            return parseNumber();
+        }
+
+        function parseTerm() {
+            let value = parseUnary();
+
+            while (tokens[tokenIndex] === "*" || tokens[tokenIndex] === "/") {
+                const operator = tokens[tokenIndex++];
+                const right = parseUnary();
+
+                if (operator === "/" && right === 0) {
+                    throw new Error("Division by zero");
+                }
+
+                value = operator === "*" ? value * right : value / right;
+            }
+
+            return value;
+        }
+
+        function parseSum() {
+            let value = parseTerm();
+
+            while (tokens[tokenIndex] === "+" || tokens[tokenIndex] === "-") {
+                const operator = tokens[tokenIndex++];
+                const right = parseTerm();
+                value = operator === "+" ? value + right : value - right;
+            }
+
+            return value;
+        }
+
+        const result = parseSum();
+
+        if (tokenIndex !== tokens.length || !Number.isFinite(result)) {
+            throw new Error("Invalid expression");
+        }
+
+        return Number(result.toPrecision(12)).toString();
+    }
+
+    function handleCalculatorInput(value) {
+        if (value === "clear") {
+            calculatorExpression = "";
+            calculatorHistory.textContent = "";
+            calculatorResultShown = false;
+        } else if (value === "delete") {
+            calculatorExpression = calculatorExpression.slice(0, -1);
+            calculatorResultShown = false;
+        } else if (value === "calculate") {
+            if (!calculatorExpression) {
+                return;
+            }
+
+            try {
+                const result = calculateExpression(calculatorExpression);
+                calculatorHistory.textContent = `${calculatorExpression} =`;
+                calculatorExpression = result;
+                calculatorResultShown = true;
+            } catch {
+                calculatorHistory.textContent = calculatorExpression;
+                calculatorExpression = "Error";
+                calculatorResultShown = true;
+            }
+        } else if (/^\d$/.test(value) || value === ".") {
+            if (calculatorResultShown || calculatorExpression === "Error") {
+                calculatorExpression = "";
+                calculatorHistory.textContent = "";
+            }
+
+            if (value === ".") {
+                const currentNumber = calculatorExpression.split(/[+\-*/%]/).pop();
+
+                if (currentNumber.includes(".")) {
+                    return;
+                }
+
+                if (!currentNumber) {
+                    calculatorExpression += "0";
+                }
+            }
+
+            calculatorExpression += value;
+            calculatorResultShown = false;
+        } else if (["+", "-", "*", "/", "%"].includes(value)) {
+            if (calculatorExpression === "Error") {
+                calculatorExpression = "";
+            }
+
+            if (calculatorResultShown && value !== "%") {
+                calculatorResultShown = false;
+            }
+
+            calculatorExpression += value;
+        }
+
+        renderCalculator();
+    }
+
+    calculatorButtons.addEventListener("click", (event) => {
+        const button = event.target.closest("button");
+
+        if (!button) {
+            return;
+        }
+
+        handleCalculatorInput(button.dataset.action || button.dataset.value);
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (!calculatorWindow || calculatorWindow.style.display !== "flex") {
+            return;
+        }
+
+        if (/^\d$/.test(event.key) || [".", "+", "-", "*", "/", "%"].includes(event.key)) {
+            event.preventDefault();
+            handleCalculatorInput(event.key);
+        } else if (event.key === "Enter" || event.key === "=") {
+            event.preventDefault();
+            handleCalculatorInput("calculate");
+        } else if (event.key === "Backspace") {
+            event.preventDefault();
+            handleCalculatorInput("delete");
+        } else if (event.key === "Escape") {
+            handleCalculatorInput("clear");
+        }
+    });
+}
+
+const stopwatchDisplay = document.getElementById("stopwatch-display");
+const stopwatchStart = document.getElementById("stopwatch-start");
+const stopwatchReset = document.getElementById("stopwatch-reset");
+
+if (stopwatchDisplay && stopwatchStart && stopwatchReset) {
+    let elapsedMilliseconds = 0;
+    let startedAt = 0;
+    let animationFrame = null;
+
+    function renderStopwatch(milliseconds) {
+        const tenths = Math.floor(milliseconds / 100);
+        const minutes = Math.floor(tenths / 600);
+        const seconds = Math.floor(tenths / 10) % 60;
+        const fraction = tenths % 10;
+
+        stopwatchDisplay.textContent =
+            `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${fraction}`;
+    }
+
+    function updateStopwatch() {
+        renderStopwatch(elapsedMilliseconds + performance.now() - startedAt);
+        animationFrame = requestAnimationFrame(updateStopwatch);
+    }
+
+    stopwatchStart.addEventListener("click", () => {
+        if (animationFrame !== null) {
+            elapsedMilliseconds += performance.now() - startedAt;
+            cancelAnimationFrame(animationFrame);
+            animationFrame = null;
+            stopwatchStart.textContent = "Start";
+            return;
+        }
+
+        startedAt = performance.now();
+        stopwatchStart.textContent = "Pause";
+        animationFrame = requestAnimationFrame(updateStopwatch);
+    });
+
+    stopwatchReset.addEventListener("click", () => {
+        if (animationFrame !== null) {
+            cancelAnimationFrame(animationFrame);
+            animationFrame = null;
+        }
+
+        elapsedMilliseconds = 0;
+        stopwatchStart.textContent = "Start";
+        renderStopwatch(0);
+    });
+}
 
 const paintCanvas = document.getElementById("paint-canvas");
 const paintColor = document.getElementById("paint-color");
@@ -1167,6 +1397,10 @@ if (fileUpload) {
 
         renderFiles();
     });
+
+
+
+
 }
 
 if (filesBack) {
@@ -1195,6 +1429,7 @@ filesLocations.forEach((location) => {
             return;
         }
 
+        
         if (folderName === "Home") {
             currentPath = [];
         } else {
@@ -1223,7 +1458,109 @@ filesLocations.forEach((location) => {
     });
 
 });
-
+   
 
 updateFileSidebar();
 renderFiles();
+
+/* =================================
+   COBRAOS DESKTOP CALENDAR
+================================= */
+
+(() => {
+    const monthElement = document.getElementById("calendar-month");
+    const daysElement = document.getElementById("calendar-days");
+    const todayElement = document.getElementById("calendar-today");
+    const previousButton = document.getElementById("calendar-prev");
+    const nextButton = document.getElementById("calendar-next");
+
+    if (
+        !monthElement || !daysElement || !todayElement ||
+        !previousButton || !nextButton
+    ) {
+        return;
+    }
+
+    const today = new Date();
+    let displayedMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    let selectedDate = new Date(today);
+
+    const monthFormatter = new Intl.DateTimeFormat("en-US", {
+        month: "long",
+        year: "numeric"
+    });
+    const dateFormatter = new Intl.DateTimeFormat("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+    });
+
+    function sameDate(firstDate, secondDate) {
+        return firstDate.getFullYear() === secondDate.getFullYear() &&
+            firstDate.getMonth() === secondDate.getMonth() &&
+            firstDate.getDate() === secondDate.getDate();
+    }
+
+    function renderCalendar() {
+        monthElement.textContent = monthFormatter.format(displayedMonth);
+        daysElement.replaceChildren();
+
+        const year = displayedMonth.getFullYear();
+        const month = displayedMonth.getMonth();
+        const firstWeekday = new Date(year, month, 1).getDay();
+        const startDate = new Date(year, month, 1 - firstWeekday);
+
+        for (let dayOffset = 0; dayOffset < 42; dayOffset++) {
+            const date = new Date(startDate);
+            date.setDate(startDate.getDate() + dayOffset);
+
+            const dayButton = document.createElement("button");
+            const isSelected = sameDate(date, selectedDate);
+
+            dayButton.type = "button";
+            dayButton.textContent = date.getDate();
+            dayButton.setAttribute("aria-label", dateFormatter.format(date));
+            dayButton.setAttribute("aria-pressed", String(isSelected));
+
+            if (date.getMonth() !== month) {
+                dayButton.classList.add("other-month");
+            }
+            if (sameDate(date, today)) {
+                dayButton.classList.add("today");
+            }
+            if (isSelected) {
+                dayButton.classList.add("selected");
+            }
+
+            dayButton.addEventListener("click", () => {
+                selectedDate = new Date(date);
+                displayedMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+                renderCalendar();
+            });
+
+            daysElement.appendChild(dayButton);
+        }
+
+        todayElement.textContent = sameDate(selectedDate, today)
+            ? `Today · ${dateFormatter.format(today)}`
+            : `Selected · ${dateFormatter.format(selectedDate)}`;
+    }
+
+    previousButton.addEventListener("click", () => {
+        displayedMonth = new Date(
+            displayedMonth.getFullYear(), displayedMonth.getMonth() - 1, 1
+        );
+        renderCalendar();
+    });
+
+    nextButton.addEventListener("click", () => {
+        displayedMonth = new Date(
+            displayedMonth.getFullYear(), displayedMonth.getMonth() + 1, 1
+        );
+        renderCalendar();
+    });
+
+    renderCalendar();
+})();
+

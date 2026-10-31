@@ -964,3 +964,303 @@ body[data-theme="light"] .volume-popup {
     cursor: crosshair;
     touch-action: none;
 }
+
+.calculator-window {
+    width: 340px;
+    height: 500px;
+    max-width: calc(100vw - 24px);
+    max-height: calc(100vh - 90px);
+}
+
+.calculator-content {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background: #171b24;
+}
+
+.calculator-display {
+    display: flex;
+    min-height: 84px;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 6px;
+    padding: 12px 14px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    background: #0c1016;
+    color: white;
+    font-variant-numeric: tabular-nums;
+}
+
+#calculator-history {
+    min-height: 16px;
+    max-width: 100%;
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#calculator-display {
+    max-width: 100%;
+    overflow: hidden;
+    font-size: 32px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.calculator-buttons {
+    display: grid;
+    flex: 1;
+    min-height: 0;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.calculator-buttons button {
+    min-width: 0;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    background: #2a303b;
+    font-size: 18px;
+}
+
+.calculator-buttons button:hover {
+    background: #3a424f;
+}
+
+.calculator-buttons .calculator-special {
+    background: #414955;
+}
+
+.calculator-buttons .calculator-operator {
+    background: #315a60;
+}
+
+.calculator-buttons .calculator-equals {
+    background: #397c70;
+}
+
+.calculator-buttons .zero-button {
+    grid-column: span 2;
+}
+
+.stopwatch-window {
+    width: 320px;
+    height: 245px;
+    max-width: calc(100vw - 24px);
+    max-height: calc(100vh - 90px);
+}
+
+.stopwatch-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+    padding: 24px;
+    background: #171b24;
+}
+
+#stopwatch-display {
+    color: white;
+    font-family: "Courier New", monospace;
+    font-size: 42px;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+}
+
+.stopwatch-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.stopwatch-controls button {
+    min-width: 90px;
+}
+
+#stopwatch-start {
+    background: #397c70;
+}
+
+#stopwatch-reset {
+    background: #414955;
+}
+
+.desktop-calendar {
+    position: absolute;
+    top: 70px;
+    right: 24px;
+    width: 310px;
+    max-width: calc(100vw - 24px);
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(18, 24, 34, 0.9);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: white;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    z-index: 1;
+    user-select: none;
+
+}
+
+.calendar-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    opacity: 0.55;
+    margin: 0 0 6px;
+
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.calendar-header h2 {
+    font-size: 20px;
+    margin: 0;
+    font-weight: 600;
+}
+
+.calendar-navigation {
+    display: flex;
+    gap: 6px;
+
+}
+
+.calendar-navigation button {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-size: 21px;
+    cursor: pointer;
+
+}
+
+.calendar-navigation button:hover {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.calendar-weekdays,
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    text-align: center;
+}
+
+.calendar-weekdays {
+    margin-bottom: 8px;
+
+}
+
+.calendar-weekdays span {
+    font-size: 11px;
+    opacity: 0.5;
+    font-weight: 600;
+
+}
+
+.calendar-days button {
+    aspect-ratio: 1;
+    min-width: 0;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.calendar-days button:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.calendar-days button.selected {
+    border-color: #9ce2c1;
+    background: #72c99e;
+    color: #10251c;
+    font-weight: 700;
+}
+
+.calendar-days button.selected:hover {
+    background: #8bd8b1;
+}
+
+.calendar-days button:focus-visible,
+.calendar-navigation button:focus-visible {
+    outline: 2px solid #9ce2c1;
+    outline-offset: 2px;
+    position: relative;
+    z-index: 1;
+    color: white;
+}
+
+.calendar-days button.today:not(.selected) {
+    border-color: #72c99e;
+    color: #a9e7c7;
+    font-weight: 700;
+}
+
+.calendar-days button.other-month {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.calendar-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 11px;
+}
+
+.today-indicator {
+    flex: 0 0 7px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #72c99e;
+}
+
+@media (max-width: 600px) {
+    .desktop-calendar {
+        top: 62px;
+        right: 12px;
+        width: 286px;
+        padding: 16px;
+    }
+
+    .calendar-header h2 {
+        font-size: 18px;
+    }
+}
+
+
